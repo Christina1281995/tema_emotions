@@ -1,0 +1,17 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Christina",
+            "data_path": "data/grace_data_for_labeling_individ_aspects.csv"
+        }, 
+
+        {
+            "id": 2,
+            "name": "user",
+            "data_path": "data/grace_data_for_labeling_individ_aspects.csv"
+        }
+    ],
+    "predefined": true
+
+}
