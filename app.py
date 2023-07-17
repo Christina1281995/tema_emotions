@@ -122,7 +122,7 @@ if st.session_state["start"] == False:
         if user_data is not None:
             
             # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] + 2  # Assuming the 'tweet_id' column is the third column in the table (+1 for the next question, +1 for the index which is one lower)
+            question_number = user_data[2] # + 2  # Assuming the 'tweet_id' column is the third column in the table (+1 for the next question, +1 for the index which is one lower)
         
         # If user hasn't done any labelling yet, set question number to 0
         else:
