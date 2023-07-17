@@ -8,6 +8,7 @@ dependencies:
   - libffi=3.4.2
   - openssl=1.1.1u
   - pip=22.3.1
+  - psycopg2=2.9.3
   - python=3.10.9
   - setuptools=65.6.3
   - sqlite=3.40.1
@@ -41,7 +42,6 @@ dependencies:
     - packaging==23.0
     - pandas==1.5.3
     - pillow==9.4.0
-    - psycopg2==2.9.3
     - protobuf==3.20.3
     - pyarrow==11.0.0
     - pydeck==0.8.0
