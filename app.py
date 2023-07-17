@@ -37,15 +37,20 @@ def save_results(data):
 
     # Create a new table if it doesn't exist
     create_table_query = '''CREATE TABLE IF NOT EXISTS results (
-                            id SERIAL PRIMARY KEY,
-                            author TEXT,
-                            tweet_id INTEGER,
-                            emotion TEXT);'''
+            id serial NOT NULL,
+            author text,
+            tweet_id integer,
+            emotion text,
+            sentence text,
+            aspect_term text,
+            sentiment text,
+            PRIMARY KEY (id)
+        );'''
     cursor.execute(create_table_query)
 
     # Insert the data into the table
     for row in data.to_dict(orient='records'):
-        insert_query = f"INSERT INTO results (id, author, tweet_id, emotion) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}');"
+        insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
         cursor.execute(insert_query)
         
         # Increment Number
@@ -130,20 +135,6 @@ if st.session_state["start"] == False:
             # User is new, initialize question number to 0
             question_number = 0
 
-        # if user_name in user_ids:
-        #     id_provided = user_name
-
-        #    # check if the user is new or returning
-        #     output_filename = './results/results_' + str(id_provided) + '.csv'
-        #     results_frame = pd.DataFrame()
-        #     if os.path.isfile(output_filename):
-        #         results_frame = pd.read_csv(output_filename, sep=';')
-        #         print("shape", results_frame)
-        #     if results_frame.shape[0] > 0:
-        #         last_row = results_frame.shape[0] - 1
-        #         question_number = int(results_frame["q_num"][last_row]) + 1
-        #     else:
-        #         question_number = 0
 
         st.session_state["start"] = True
         # defining our Session State
@@ -206,8 +197,8 @@ else:
                     print(emotion[0])
                     emotion_to_add = emotion[0]
                     # data = {"q_num": st.session_state.question_number, "emotions": emotion_to_add}
-                    data = [[st.session_state.question_number, emotion_to_add]]
-                    save_results(pd.DataFrame(data, columns=["q_num", "emotions"]))
+                    data = [[st.session_state.question_number, emotion_to_add, sentence, aspect_term, sentiment]]
+                    save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
                     # increment_index()  # Increment the question number for the next sentence
 
                 # if st.form_submit_button("Back"):
