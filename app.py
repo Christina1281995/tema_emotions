@@ -173,14 +173,14 @@ else:
             sentiment = df["Sentiment"][st.session_state.question_number]
 
             # Highlight aspect term in the sentence
-            sentence = re.sub(
+            sentence_highlight = re.sub(
                 r"\b" + re.escape(aspect_term) + r"\b",  # exact match of the aspect term
                 lambda match: f"<span style='color:red'>{match.group(0)}</span>",  # wrap in HTML span tag with red color
                 sentence,
                 flags=re.IGNORECASE
             )
 
-            st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
+            st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
             st.markdown(f"**Sentiment:** {sentiment}")
 
