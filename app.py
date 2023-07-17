@@ -53,8 +53,8 @@ def save_results(data):
         insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
         cursor.execute(insert_query)
         
-        # Increment Number
-        st.session_state["question_number"] += 1  # Increment the question number for the next row
+    # Increment Number
+    st.session_state["question_number"] += 1  # Increment the question number for the next row
 
     # Commit the changes and close the connection
     conn.commit()
@@ -89,12 +89,6 @@ def get_user_data(user_id):
 
     return result
 
-# helper functions:
-def increment_index():
-    st.session_state["question_number"] += 1
-
-def decrement_index():
-    st.session_state["question_number"] -= 1
 
 def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
@@ -128,7 +122,7 @@ if st.session_state["start"] == False:
         if user_data is not None:
             
             # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] + 1  # Assuming the 'tweet_id' column is the third column in the table
+            question_number = user_data[2] + 2  # Assuming the 'tweet_id' column is the third column in the table (+1 for the next question, +1 for the index which is one lower)
         
         # If user hasn't done any labelling yet, set question number to 0
         else:
@@ -193,20 +187,14 @@ else:
                     index=4, 
                     format_func=lambda x: x[1])
 
-                if st.form_submit_button("Submit"):  #, on_click=increment_index):
+                if st.form_submit_button("Submit"): 
                     print(emotion[0])
                     emotion_to_add = emotion[0]
-                    # data = {"q_num": st.session_state.question_number, "emotions": emotion_to_add}
                     data = [[st.session_state.question_number, emotion_to_add, sentence, aspect_term, sentiment]]
                     save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
-                    # increment_index()  # Increment the question number for the next sentence
 
-                # if st.form_submit_button("Back"):
-                #         decrement_index()  # Decrement the question number for the previous sentence
-                #         increment_index()  # Increment the question number to display the previous sentence again
 
             st.write("---")
-            # st.button("Next", on_click=increment_index)
 
         else:
             st.markdown("End of data.")
