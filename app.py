@@ -1,8 +1,10 @@
+# Imports
 import streamlit as st
 import os
 import pandas as pd
 import json
 import re
+import psycopg2
 
 @st.cache_data
 def load_data(upload_obj):
@@ -14,14 +16,73 @@ def load_data(upload_obj):
         print("Unable to process your request.")
     return df
 
-def save_results(df):
-    output_filename = './results/results_' + str(st.session_state.user_id) + '.csv'
-    if os.path.isfile(output_filename):
-        df.to_csv(output_filename, mode='a', header=False, index=False, sep=';')
-    else:
-        print("File does not exist")
-        df.to_csv(output_filename, header=True, index=False, sep=';')
+# Save labelled data to database table
 
+def save_results(data):
+    # Connect to the PostgreSQL database
+    try:
+        conn = psycopg2.connect(
+            host=st.secrets["db_host"],
+            database=st.secrets["db_database"],
+            user=st.secrets["db_username"],
+            password=st.secrets["db_password"],
+            port="5432"  
+        )
+    except psycopg2.Error as e:
+        print("Error connecting to the database:", e)
+        return
+
+    # Create a cursor to execute queries
+    cursor = conn.cursor()
+
+    # Create a new table if it doesn't exist
+    create_table_query = '''CREATE TABLE IF NOT EXISTS results (
+                            id SERIAL PRIMARY KEY,
+                            author TEXT,
+                            tweet_id INTEGER,
+                            emotion TEXT);'''
+    cursor.execute(create_table_query)
+
+    # Insert the data into the table
+    for row in data.to_dict(orient='records'):
+        insert_query = f"INSERT INTO results (id, author, tweet_id, emotion) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}');"
+        cursor.execute(insert_query)
+        
+        # Increment Number
+        st.session_state["question_number"] += 1  # Increment the question number for the next row
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
+# Query user data at start of session to check if some progress is already made
+def get_user_data(user_id):
+    # Connect to the PostgreSQL database
+    try:
+        conn = psycopg2.connect(
+            host=st.secrets["db_host"],
+            database=st.secrets["db_database"],
+            user=st.secrets["db_username"],
+            password=st.secrets["db_password"],
+            port="5432" 
+        )
+    except psycopg2.Error as e:
+        print("Error connecting to the database:", e)
+        return None
+
+    # Create a cursor to execute queries
+    cursor = conn.cursor()
+
+    # Query the database to get the user's data
+    query = f"SELECT * FROM results WHERE author = '{user_id}' ORDER BY tweet_id DESC LIMIT 1;"
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    # Close the connection
+    conn.close()
+
+    return result
 
 # helper functions:
 def increment_index():
@@ -30,15 +91,18 @@ def increment_index():
 def decrement_index():
     st.session_state["question_number"] -= 1
 
+def extract_emotion_labels(emotion_data):
+    return [emotion for emotion, label in emotion_data]
 
-# load config file
+
+# Load config file
 with open('config.json') as f:
     config = json.load(f)
 
-# create app 
+# Set title
 st.title('Geo-Social Analytics: Aspect Based Emotion Labeling')
 
-# set initial state
+# Set initial state
 if "start" not in st.session_state:
     st.session_state["start"] = False
 
@@ -48,43 +112,59 @@ if "expander" not in st.session_state:
 user_ids = [i["name"] for i in config["users"]]
 if st.session_state["start"] == False:
 
-    user_name = st.text_input('Please type in your user id')
+    # Prompt for user name
+    user_name = st.text_input('Please enter your username')
     if user_name != '':
-        st.write('User_id:', user_name)
-        if user_name in user_ids:
-            id_provided = user_name
-            # check if the user is new or returning
-            output_filename = './results/results_' + str(id_provided) + '.csv'
-            results_frame = pd.DataFrame()
-            if os.path.isfile(output_filename):
-                results_frame = pd.read_csv(output_filename, sep=';')
-                print("shape", results_frame)
-            if results_frame.shape[0] > 0:
-                last_row = results_frame.shape[0] - 1
-                question_number = int(results_frame["q_num"][last_row]) + 1
-            else:
-                question_number = 0
+        st.write('Username:', user_name)
+        # Get database data on user
+        user_data = get_user_data(user_name)
 
-            st.session_state["start"] = True
-            # defining our Session State
-            st.session_state["q_num"] = []
-            st.session_state["emotions"] = []
-            st.session_state.user_id = id_provided
-            st.session_state.question_number = question_number
-            st.button("Start Labeling")
-
+        # If user already exists, return the current question number
+        if user_data is not None:
+            
+            # If user is returning, retrieve their previous data for current question number
+            question_number = user_data[2] + 1  # Assuming the 'tweet_id' column is the third column in the table
+        
+        # If user hasn't done any labelling yet, set question number to 0
         else:
-            st.write('User_id not found')
+            # User is new, initialize question number to 0
+            question_number = 0
+
+        # if user_name in user_ids:
+        #     id_provided = user_name
+
+        #    # check if the user is new or returning
+        #     output_filename = './results/results_' + str(id_provided) + '.csv'
+        #     results_frame = pd.DataFrame()
+        #     if os.path.isfile(output_filename):
+        #         results_frame = pd.read_csv(output_filename, sep=';')
+        #         print("shape", results_frame)
+        #     if results_frame.shape[0] > 0:
+        #         last_row = results_frame.shape[0] - 1
+        #         question_number = int(results_frame["q_num"][last_row]) + 1
+        #     else:
+        #         question_number = 0
+
+        st.session_state["start"] = True
+        # defining our Session State
+        st.session_state["q_num"] = []
+        st.session_state["emotions"] = []
+        st.session_state.user_id = str(user_name)
+        st.session_state.question_number = question_number
+        st.button("Start Labeling")
+
+    else:
+        st.write('Username not found')
 
 else:
-
+    # Get pre-loaded data that is assigned to the username
     if config["predefined"]:
         path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
         df = pd.read_csv(path)
 
     else:
         with st.expander("Upload data", expanded=st.session_state.expander):
-            # load Data 
+            # load data 
             uploaded_data = st.file_uploader("Csv file", type = ['.csv'])
             df = load_data(uploaded_data)
             st.info("Upload data")
@@ -122,10 +202,13 @@ else:
                     index=4, 
                     format_func=lambda x: x[1])
 
-                if st.form_submit_button("Submit", on_click=increment_index):
-                    data = {"q_num": st.session_state.question_number, "emotions": emotion}
+                if st.form_submit_button("Submit"):  #, on_click=increment_index):
+                    print(emotion[0])
+                    emotion_to_add = emotion[0]
+                    # data = {"q_num": st.session_state.question_number, "emotions": emotion_to_add}
+                    data = [[st.session_state.question_number, emotion_to_add]]
                     save_results(pd.DataFrame(data, columns=["q_num", "emotions"]))
-                    increment_index()  # Increment the question number for the next sentence
+                    # increment_index()  # Increment the question number for the next sentence
 
                 # if st.form_submit_button("Back"):
                 #         decrement_index()  # Decrement the question number for the previous sentence
