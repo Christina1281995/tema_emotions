@@ -191,6 +191,7 @@ else:
                     print(emotion[0])
                     emotion_to_add = emotion[0]
                     data = [[st.session_state.question_number, emotion_to_add, sentence, aspect_term, sentiment]]
+                    print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
 
 
