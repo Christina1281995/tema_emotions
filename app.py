@@ -1,10 +1,46 @@
 # Imports
-import streamlit as st
 import os
-import pandas as pd
 import json
 import re
+import pandas as pd
 import psycopg2
+import streamlit as st
+import logging
+
+logging.basicConfig(level=logging.DEBUG)  # Set the logging level
+
+
+# --------- Constants ---------
+
+CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS results (
+    id serial NOT NULL,
+    author text,
+    tweet_id integer,
+    emotion text,
+    sentence text,
+    aspect_term text,
+    sentiment text,
+    PRIMARY KEY (id)
+);'''
+
+EMOTION_OPTIONS = [('Anger', 'Anger'), ('Sadness', 'Sadness'), ('Happiness', 'Happiness'), ('Fear', 'Fear'), ('None', 'None')]
+
+
+# --------- Functions ---------
+
+def connect_to_database():
+    try:
+        conn = psycopg2.connect(
+            host=st.secrets["db_host"],
+            database=st.secrets["db_database"],
+            user=st.secrets["db_username"],
+            password=st.secrets["db_password"],
+            port="5432"
+        )
+        return conn
+    except psycopg2.Error as e:
+        logging.debug("Error connecting to the database:", e)
+        return None
 
 @st.cache_data
 def load_data(upload_obj):
@@ -13,46 +49,27 @@ def load_data(upload_obj):
     try:
         df = pd.read_csv(upload_obj)
     except (ValueError, RuntimeError, TypeError, NameError):
-        print("Unable to process your request.")
+        logging.debug("Unable to process your request.")
     return df
 
-# Save labelled data to database table
 
 def save_results(data):
     # Connect to the PostgreSQL database
-    try:
-        conn = psycopg2.connect(
-            host=st.secrets["db_host"],
-            database=st.secrets["db_database"],
-            user=st.secrets["db_username"],
-            password=st.secrets["db_password"],
-            port="5432"  
-        )
-    except psycopg2.Error as e:
-        print("Error connecting to the database:", e)
+    conn = connect_to_database()
+    if not conn:
         return
 
     # Create a cursor to execute queries
     cursor = conn.cursor()
 
     # Create a new table if it doesn't exist
-    create_table_query = '''CREATE TABLE IF NOT EXISTS results (
-            id serial NOT NULL,
-            author text,
-            tweet_id integer,
-            emotion text,
-            sentence text,
-            aspect_term text,
-            sentiment text,
-            PRIMARY KEY (id)
-        );'''
-    cursor.execute(create_table_query)
+    cursor.execute(CREATE_TABLE_QUERY)
 
     # Insert the data into the table
     for row in data.to_dict(orient='records'):
         insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
         cursor.execute(insert_query)
-        
+
     # Increment Number
     st.session_state["question_number"] += 1  # Increment the question number for the next row
 
@@ -61,19 +78,10 @@ def save_results(data):
     conn.close()
 
 
-# Query user data at start of session to check if some progress is already made
 def get_user_data(user_id):
     # Connect to the PostgreSQL database
-    try:
-        conn = psycopg2.connect(
-            host=st.secrets["db_host"],
-            database=st.secrets["db_database"],
-            user=st.secrets["db_username"],
-            password=st.secrets["db_password"],
-            port="5432" 
-        )
-    except psycopg2.Error as e:
-        print("Error connecting to the database:", e)
+    conn = connect_to_database()
+    if not conn:
         return None
 
     # Create a cursor to execute queries
@@ -94,12 +102,14 @@ def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
 
+# --------- App ---------
+
 # Load config file
 with open('config.json') as f:
     config = json.load(f)
 
 # Set title
-st.title('Geo-Social Analytics: Aspect Based Emotion Labeling')
+st.title('Aspect-Based Emotion Labeling')
 
 # Set initial state
 if "start" not in st.session_state:
@@ -158,7 +168,8 @@ else:
 
     if df is not None:
 
-        st.progress(st.session_state.question_number/df.shape[0])
+        # st.progress(st.session_state.question_number/df.shape[0])
+        st.progress(35)
 
         if st.session_state.question_number < df.shape[0]:
             # Sentence
