@@ -169,7 +169,8 @@ else:
     if df is not None:
 
         # st.progress(st.session_state.question_number/df.shape[0])
-        st.progress(int(st.session_state.question_number))
+        percentage_progress = (int(st.session_state.question_number) / len(df)) * 100
+        st.progress(percentage_progress)
 
         if st.session_state.question_number < df.shape[0]:
             # Sentence
