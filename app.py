@@ -169,7 +169,7 @@ else:
     if df is not None:
 
         # st.progress(st.session_state.question_number/df.shape[0])
-        st.progress(35)
+        st.progress(int(st.session_state.question_number))
 
         if st.session_state.question_number < df.shape[0]:
             # Sentence
