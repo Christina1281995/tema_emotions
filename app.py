@@ -66,9 +66,14 @@ def save_results(data):
     cursor.execute(CREATE_TABLE_QUERY)
 
     # Insert the data into the table
+    # for row in data.to_dict(orient='records'):
+    #     insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
+    #     cursor.execute(insert_query)
+    
     for row in data.to_dict(orient='records'):
-        insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
-        cursor.execute(insert_query)
+        insert_query = "INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['q_num'], row['emotions'], row['sentence'], row['aspect_term'], row['sentiment'])
+        cursor.execute(insert_query, values)
 
     # Increment Number
     st.session_state["question_number"] += 1  # Increment the question number for the next row
@@ -87,9 +92,15 @@ def get_user_data(user_id):
     # Create a cursor to execute queries
     cursor = conn.cursor()
 
+    # # Query the database to get the user's data
+    # query = f"SELECT * FROM results WHERE author = '{user_id}' ORDER BY tweet_id DESC LIMIT 1;"
+    # cursor.execute(query)
+    # result = cursor.fetchone()
+
     # Query the database to get the user's data
-    query = f"SELECT * FROM results WHERE author = '{user_id}' ORDER BY tweet_id DESC LIMIT 1;"
-    cursor.execute(query)
+    query = "SELECT * FROM results WHERE author = %s ORDER BY tweet_id DESC LIMIT 1;"
+    values = (user_id,)
+    cursor.execute(query, values)
     result = cursor.fetchone()
 
     # Close the connection
@@ -119,12 +130,17 @@ if "expander" not in st.session_state:
     st.session_state["expander"] = True
 
 user_ids = [i["name"] for i in config["users"]]
+
+# For logging in
 if st.session_state["start"] == False:
 
     # Prompt for user name
     user_name = st.text_input('Please enter your username')
+    
     if user_name != '':
+        
         st.write('Username:', user_name)
+        
         # Get database data on user
         user_data = get_user_data(user_name)
 
@@ -132,25 +148,26 @@ if st.session_state["start"] == False:
         if user_data is not None:
             
             # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] # + 2  # Assuming the 'tweet_id' column is the third column in the table (+1 for the next question, +1 for the index which is one lower)
-        
+            question_number = user_data[2] # - 1  # Assuming the 'tweet_id' column is the third column in the table
+
         # If user hasn't done any labelling yet, set question number to 0
         else:
             # User is new, initialize question number to 0
             question_number = 0
-
 
         st.session_state["start"] = True
         # defining our Session State
         st.session_state["q_num"] = []
         st.session_state["emotions"] = []
         st.session_state.user_id = str(user_name)
-        st.session_state.question_number = question_number
+        st.session_state["question_number"] = question_number
+        
         st.button("Start Labeling")
 
     else:
         st.write('Username not found')
 
+# If session_state["start"] == True
 else:
     # Get pre-loaded data that is assigned to the username
     if config["predefined"]:
@@ -165,34 +182,67 @@ else:
             st.info("Upload data")
             st.session_state.expander = False
 
-
+    # If there is data
     if df is not None:
+        
+        # Show current progress
+        percentage_progress = round((int(st.session_state.question_number) / len(df)) * 100)
+        if percentage_progress < 100:
+            st.progress(percentage_progress)
+        else:
+            st.progress(100)
 
-        # st.progress(st.session_state.question_number/df.shape[0])
-        percentage_progress = (int(st.session_state.question_number) / len(df)) * 100
-        st.progress(percentage_progress)
-
-        if st.session_state.question_number < df.shape[0]:
-            # Sentence
+        # If we haven't reached the end of the labeling task yet
+        if st.session_state.question_number < len(df):
+            
+            # Set labeling parameters
+            # These are the parameters that will be shown upon submission (i.e. for the next round)
             sentence = df["Sentence"][st.session_state.question_number]
             aspect_term = df["Aspect Terms"][st.session_state.question_number]
             sentiment = df["Sentiment"][st.session_state.question_number]
 
+
+            # These are the parameters to submit when button hits submit (i.e. the parameters currently shown --> index -1)
+            if st.session_state.question_number != 0:
+                prev_sentence = df["Sentence"][st.session_state.question_number - 1]
+                prev_aspect_term = df["Aspect Terms"][st.session_state.question_number - 1]
+                prev_sentiment = df["Sentiment"][st.session_state.question_number - 1]
+            # In the very first round (index = 0) use the current sentence
+            else:
+                prev_sentence = df["Sentence"][st.session_state.question_number]
+                prev_aspect_term = df["Aspect Terms"][st.session_state.question_number]
+                prev_sentiment = df["Sentiment"][st.session_state.question_number]
+
             # Highlight aspect term in the sentence
             sentence_highlight = re.sub(
-                r"\b" + re.escape(aspect_term) + r"\b",  # exact match of the aspect term
-                lambda match: f"<span style='color:red'>{match.group(0)}</span>",  # wrap in HTML span tag with red color
+                r"(^|\b)" + re.escape(aspect_term) + r"\b",
+                lambda match: f"<span style='color:red'>{match.group(0)}</span>",
                 sentence,
                 flags=re.IGNORECASE
             )
 
+            # aspect_term_pattern = r"\b" + re.escape(aspect_term) + r"\b"
+
+            # if sentence.lower().startswith(aspect_term.lower()):
+            #     # Handle aspect term at the beginning of the sentence
+            #     sentence_highlight = f"<span style='color:red'>{aspect_term}</span>" + sentence[len(aspect_term):]
+            # else:
+            #     # Handle aspect term within the sentence using regular expression
+            #     sentence_highlight = re.sub(
+            #         aspect_term_pattern,
+            #         lambda match: f"<span style='color:red'>{match.group(0)}</span>",
+            #         sentence,
+            #         flags=re.IGNORECASE
+            #     )
+
+
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
-            # st.markdown(f"**Sentiment:** {sentiment}")
+            # st.markdown(f"**Sentiment:** {sentiment}")  # Leave out sentiment to not bias labeller 
 
             form_key = "my_form"
             with st.form(key=form_key):
-                options = [('Anger', 'Anger'), ('Sadness', 'Sadness'), ('Happiness', 'Happiness'), ('Fear', 'Fear'), ('None', 'None')]
+                options = EMOTION_OPTIONS
                 emotion = st.radio(
                     'Assign an emotion to the aspect phrase', 
                     options, 
@@ -200,13 +250,16 @@ else:
                     format_func=lambda x: x[1])
 
                 if st.form_submit_button("Submit"): 
-                    print(emotion[0])
                     emotion_to_add = emotion[0]
-                    data = [[st.session_state.question_number, emotion_to_add, sentence, aspect_term, sentiment]]
+                    # data = [[st.session_state.question_number, emotion_to_add, prev_sentence, prev_aspect_term, prev_sentiment]]
+                    data = [[st.session_state.question_number, emotion_to_add, prev_sentence, prev_aspect_term, prev_sentiment]]
                     print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
-
-
+                    
+            
+            print(f"current sentence: {sentence}")
+            print(f"question numnber: {st.session_state.question_number}")
+            print(" ")
             st.write("---")
 
         else:
