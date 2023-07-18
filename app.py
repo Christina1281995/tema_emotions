@@ -176,7 +176,7 @@ else:
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
-            st.markdown(f"**Sentiment:** {sentiment}")
+            # st.markdown(f"**Sentiment:** {sentiment}")
 
             form_key = "my_form"
             with st.form(key=form_key):
