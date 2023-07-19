@@ -21,19 +21,19 @@
         {
             "id": 4,
             "name": "testing2",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/subset1_data.csv"
         },
         
         {
             "id": 5,
             "name": "testing3",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/subset2_data.csv"
         },
                 
         {
             "id": 6,
             "name": "testing4",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/subset3_data.csv"
         }
     ],
     "predefined": true

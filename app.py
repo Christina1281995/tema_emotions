@@ -66,10 +66,6 @@ def save_results(data):
     cursor.execute(CREATE_TABLE_QUERY)
 
     # Insert the data into the table
-    # for row in data.to_dict(orient='records'):
-    #     insert_query = f"INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, '{st.session_state.user_id}', {row['q_num']}, '{row['emotions']}', '{row['sentence']}', '{row['aspect_term']}', '{row['sentiment']}');"
-    #     cursor.execute(insert_query)
-    
     for row in data.to_dict(orient='records'):
         insert_query = "INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s);"
         values = (st.session_state.user_id, row['q_num'], row['emotions'], row['sentence'], row['aspect_term'], row['sentiment'])
@@ -91,11 +87,6 @@ def get_user_data(user_id):
 
     # Create a cursor to execute queries
     cursor = conn.cursor()
-
-    # # Query the database to get the user's data
-    # query = f"SELECT * FROM results WHERE author = '{user_id}' ORDER BY tweet_id DESC LIMIT 1;"
-    # cursor.execute(query)
-    # result = cursor.fetchone()
 
     # Query the database to get the user's data
     query = "SELECT * FROM results WHERE author = %s ORDER BY tweet_id DESC LIMIT 1;"
@@ -201,7 +192,6 @@ else:
             aspect_term = df["Aspect Terms"][st.session_state.question_number]
             sentiment = df["Sentiment"][st.session_state.question_number]
 
-
             # These are the parameters to submit when button hits submit (i.e. the parameters currently shown --> index -1)
             if st.session_state.question_number != 0:
                 prev_sentence = df["Sentence"][st.session_state.question_number - 1]
@@ -213,46 +203,14 @@ else:
                 prev_aspect_term = df["Aspect Terms"][st.session_state.question_number]
                 prev_sentiment = df["Sentiment"][st.session_state.question_number]
 
-            # Highlight aspect term in the sentence
-            # sentence_highlight = re.sub(
-            #     r"(^|\b)" + re.escape(aspect_term) + r"\b",
-            #     lambda match: f"<span style='color:red'>{match.group(0)}</span>",
-            #     sentence,
-            #     flags=re.IGNORECASE
-            # )
-
-            # import re
-
-            # # Escape the aspect term for safe use in the regular expression
-            # aspect_term_pattern = re.escape(aspect_term)
-
-            # # Find all occurrences of the aspect term with boundaries
-            # matches = list(re.finditer(r"\b" + aspect_term_pattern + r"\b", sentence, re.IGNORECASE))
-
-            # if matches:
-            #     # If there are matches, highlight each occurrence with the appropriate color
-            #     sentence_highlight = sentence
-            #     for match in matches:
-            #         start_idx, end_idx = match.span()
-            #         sentence_highlight = sentence_highlight[:start_idx] + f"<span style='color:red'>{sentence[start_idx:end_idx]}</span>" + sentence_highlight[end_idx:]
-            # else:
-            #     # If there are no matches, use the original sentence without any highlighting
-            #     sentence_highlight = sentence
-            
+            # Highlight aspect term in the sentence           
             def highlight_aspect_term(sentence, aspect_term):
                 aspect_term_pattern = re.escape(aspect_term)
                 pattern = r"(?<![^\W_])" + aspect_term_pattern + r"(?![^\W_])"
                 sentence_highlighted = re.sub(pattern, r"<span style='color:red'>\g<0></span>", sentence, flags=re.IGNORECASE)
                 return sentence_highlighted
 
-            # # Example usage:
-            # sentence = "Finally someone is making a noise about this ! About time ! \"Gavaskar , Shastri are biased\" http://t.co/M4qc4M6"
-            # aspect_term = "\"Gavaskar"
-
-            # highlighted_sentence = highlight_aspect_term(sentence, aspect_term)
-            # print(highlighted_sentence)
             sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
-
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
@@ -269,15 +227,10 @@ else:
 
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
-                    # data = [[st.session_state.question_number, emotion_to_add, prev_sentence, prev_aspect_term, prev_sentiment]]
                     data = [[st.session_state.question_number, emotion_to_add, prev_sentence, prev_aspect_term, prev_sentiment]]
                     print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
                     
-            
-            print(f"current sentence: {sentence}")
-            print(f"question numnber: {st.session_state.question_number}")
-            print(" ")
             st.write("---")
 
         else:
