@@ -221,7 +221,9 @@ else:
             #     flags=re.IGNORECASE
             # )
 
-            aspect_term_pattern = r"\b" + re.escape(aspect_term) + r"\b"
+            import re
+
+            aspect_term_pattern = re.escape(aspect_term)
 
             if sentence.lower().startswith(aspect_term.lower()):
                 # Handle aspect term at the beginning of the sentence
@@ -231,13 +233,13 @@ else:
                 sentence_highlight = sentence[:len(sentence) - len(aspect_term)] + f"<span style='color:red'>{aspect_term}</span>"
             else:
                 # Handle aspect term within the sentence using regular expression with word boundaries
+                aspect_term_pattern = r"\b" + aspect_term_pattern + r"\b"
                 sentence_highlight = re.sub(
                     aspect_term_pattern,
                     lambda match: f"<span style='color:red'>{match.group(0)}</span>",
                     sentence,
                     flags=re.IGNORECASE
                 )
-
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
