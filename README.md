@@ -1,5 +1,7 @@
 # Aspect-Based Emotion Labeling
 
+Currently, this app runs at https://emotionlabeling.streamlit.app/
+
 ## To Run the App on Streamlit Cloud 
 
 ### Setup
