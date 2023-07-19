@@ -214,26 +214,30 @@ else:
                 prev_sentiment = df["Sentiment"][st.session_state.question_number]
 
             # Highlight aspect term in the sentence
-            sentence_highlight = re.sub(
-                r"(^|\b)" + re.escape(aspect_term) + r"\b",
-                lambda match: f"<span style='color:red'>{match.group(0)}</span>",
-                sentence,
-                flags=re.IGNORECASE
-            )
+            # sentence_highlight = re.sub(
+            #     r"(^|\b)" + re.escape(aspect_term) + r"\b",
+            #     lambda match: f"<span style='color:red'>{match.group(0)}</span>",
+            #     sentence,
+            #     flags=re.IGNORECASE
+            # )
 
-            # aspect_term_pattern = r"\b" + re.escape(aspect_term) + r"\b"
+            aspect_term_pattern = r"\b" + re.escape(aspect_term) + r"\b"
 
-            # if sentence.lower().startswith(aspect_term.lower()):
-            #     # Handle aspect term at the beginning of the sentence
-            #     sentence_highlight = f"<span style='color:red'>{aspect_term}</span>" + sentence[len(aspect_term):]
-            # else:
-            #     # Handle aspect term within the sentence using regular expression
-            #     sentence_highlight = re.sub(
-            #         aspect_term_pattern,
-            #         lambda match: f"<span style='color:red'>{match.group(0)}</span>",
-            #         sentence,
-            #         flags=re.IGNORECASE
-            #     )
+            if sentence.lower().startswith(aspect_term.lower()):
+                # Handle aspect term at the beginning of the sentence
+                sentence_highlight = f"<span style='color:red'>{aspect_term}</span>" + sentence[len(aspect_term):]
+            elif sentence.lower().endswith(aspect_term.lower()):
+                # Handle aspect term at the end of the sentence
+                sentence_highlight = sentence[:len(sentence) - len(aspect_term)] + f"<span style='color:red'>{aspect_term}</span>"
+            else:
+                # Handle aspect term within the sentence using regular expression
+                sentence_highlight = re.sub(
+                    aspect_term_pattern,
+                    lambda match: f"<span style='color:red'>{match.group(0)}</span>",
+                    sentence,
+                    flags=re.IGNORECASE
+                )
+
 
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
