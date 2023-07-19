@@ -131,47 +131,55 @@ if st.session_state["start"] == False:
     if user_name != '':
         
         st.write('Username:', user_name)
-        
-        # Get database data on user
-        user_data = get_user_data(user_name)
 
-        # If user already exists, return the current question number
-        if user_data is not None:
-            
-            # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] # - 1  # Assuming the 'tweet_id' column is the third column in the table
+        # Check if user is in config file
+        if config["predefined"]:
+            users = config["users"]
+            for user in users:
+                if user["name"] == user_name:
+                    
+                    st.session_state.user_id = str(user_name)
+                    st.button("Start Labeling")
+                    st.session_state["start"] = True
 
-        # If user hasn't done any labelling yet, set question number to 0
-        else:
-            # User is new, initialize question number to 0
-            question_number = 0
-
-        st.session_state["start"] = True
-        # defining our Session State
-        st.session_state["q_num"] = []
-        st.session_state["emotions"] = []
-        st.session_state.user_id = str(user_name)
-        st.session_state["question_number"] = question_number
-        
-        st.button("Start Labeling")
-
+                else:
+                    st.write("Username not found.")
     else:
-        st.write('Username not found')
+        st.write('Please enter a username.')
+                    
 
-# If session_state["start"] == True
+# If session start is True
 else:
+     
+    # Get database data on user
+    user_data = get_user_data(st.session_state.user_id)
+
+    # If user has already labelled, return the current question number
+    if user_data is not None:
+        question_number = user_data[2] # - 1  # Assuming the 'tweet_id' column is the third column in the table
+
+    # If user hasn't done any labelling yet, set question number to 0
+    else:
+        # User is new, initialize question number to 0
+        question_number = 0
+
+    # Set question number
+    st.session_state["q_num"] = []
+    st.session_state["emotions"] = []
+    st.session_state["question_number"] = question_number
+
     # Get pre-loaded data that is assigned to the username
     if config["predefined"]:
         path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
         df = pd.read_csv(path)
 
-    else:
-        with st.expander("Upload data", expanded=st.session_state.expander):
-            # load data 
-            uploaded_data = st.file_uploader("Csv file", type = ['.csv'])
-            df = load_data(uploaded_data)
-            st.info("Upload data")
-            st.session_state.expander = False
+    # else:
+    #     with st.expander("Upload data", expanded=st.session_state.expander):
+    #         # load data 
+    #         uploaded_data = st.file_uploader("Csv file", type = ['.csv'])
+    #         df = load_data(uploaded_data)
+    #         st.info("Upload data")
+    #         st.session_state.expander = False
 
     # If there is data
     if df is not None:
