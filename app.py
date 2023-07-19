@@ -223,23 +223,22 @@ else:
 
             import re
 
+            # Escape the aspect term for safe use in the regular expression
             aspect_term_pattern = re.escape(aspect_term)
 
-            if sentence.lower().startswith(aspect_term.lower()):
-                # Handle aspect term at the beginning of the sentence
-                sentence_highlight = f"<span style='color:red'>{aspect_term}</span>" + sentence[len(aspect_term):]
-            elif sentence.lower().endswith(aspect_term.lower()):
-                # Handle aspect term at the end of the sentence
-                sentence_highlight = sentence[:len(sentence) - len(aspect_term)] + f"<span style='color:red'>{aspect_term}</span>"
+            # Find all occurrences of the aspect term with boundaries
+            matches = list(re.finditer(r"\b" + aspect_term_pattern + r"\b", sentence, re.IGNORECASE))
+
+            if matches:
+                # If there are matches, highlight each occurrence with the appropriate color
+                sentence_highlight = sentence
+                for match in matches:
+                    start_idx, end_idx = match.span()
+                    sentence_highlight = sentence_highlight[:start_idx] + f"<span style='color:red'>{sentence[start_idx:end_idx]}</span>" + sentence_highlight[end_idx:]
             else:
-                # Handle aspect term within the sentence using regular expression with word boundaries
-                aspect_term_pattern = r"\b" + aspect_term_pattern + r"\b"
-                sentence_highlight = re.sub(
-                    aspect_term_pattern,
-                    lambda match: f"<span style='color:red'>{match.group(0)}</span>",
-                    sentence,
-                    flags=re.IGNORECASE
-                )
+                # If there are no matches, use the original sentence without any highlighting
+                sentence_highlight = sentence
+
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
             st.markdown(f"**Aspect Term:** {aspect_term}")
