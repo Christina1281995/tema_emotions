@@ -10,6 +10,30 @@
             "id": 2,
             "name": "user",
             "data_path": "data/grace_data_for_labeling_individ_aspects.csv"
+        },
+
+        {
+            "id": 3,
+            "name": "testing1",
+            "data_path": "data/subset_data.csv"
+        },
+        
+        {
+            "id": 4,
+            "name": "testing2",
+            "data_path": "data/subset_data.csv"
+        },
+        
+        {
+            "id": 5,
+            "name": "testing3",
+            "data_path": "data/subset_data.csv"
+        },
+                
+        {
+            "id": 6,
+            "name": "testing4",
+            "data_path": "data/subset_data.csv"
         }
     ],
     "predefined": true
