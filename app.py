@@ -221,23 +221,52 @@ else:
             #     flags=re.IGNORECASE
             # )
 
-            import re
+            # import re
 
-            # Escape the aspect term for safe use in the regular expression
-            aspect_term_pattern = re.escape(aspect_term)
+            # # Escape the aspect term for safe use in the regular expression
+            # aspect_term_pattern = re.escape(aspect_term)
 
-            # Find all occurrences of the aspect term with boundaries
-            matches = list(re.finditer(r"\b" + aspect_term_pattern + r"\b", sentence, re.IGNORECASE))
+            # # Find all occurrences of the aspect term with boundaries
+            # matches = list(re.finditer(r"\b" + aspect_term_pattern + r"\b", sentence, re.IGNORECASE))
 
-            if matches:
-                # If there are matches, highlight each occurrence with the appropriate color
-                sentence_highlight = sentence
-                for match in matches:
-                    start_idx, end_idx = match.span()
-                    sentence_highlight = sentence_highlight[:start_idx] + f"<span style='color:red'>{sentence[start_idx:end_idx]}</span>" + sentence_highlight[end_idx:]
-            else:
-                # If there are no matches, use the original sentence without any highlighting
-                sentence_highlight = sentence
+            # if matches:
+            #     # If there are matches, highlight each occurrence with the appropriate color
+            #     sentence_highlight = sentence
+            #     for match in matches:
+            #         start_idx, end_idx = match.span()
+            #         sentence_highlight = sentence_highlight[:start_idx] + f"<span style='color:red'>{sentence[start_idx:end_idx]}</span>" + sentence_highlight[end_idx:]
+            # else:
+            #     # If there are no matches, use the original sentence without any highlighting
+            #     sentence_highlight = sentence
+            
+            def highlight_aspect_term(sentence, aspect_term):
+                aspect_term_lower = aspect_term.lower()
+                sentence_lower = sentence.lower()
+
+                start_idx = sentence_lower.find(aspect_term_lower)
+                end_idx = start_idx + len(aspect_term_lower)
+
+                while start_idx != -1 and (start_idx > 0 and sentence[start_idx - 1].isalnum() or end_idx < len(sentence) and sentence[end_idx].isalnum()):
+                    # Find next occurrence of the aspect term
+                    start_idx = sentence_lower.find(aspect_term_lower, end_idx)
+                    end_idx = start_idx + len(aspect_term_lower)
+
+                if start_idx != -1:
+                    # Aspect term found, highlight it
+                    sentence_highlight = sentence[:start_idx] + f"<span style='color:red'>{sentence[start_idx:end_idx]}</span>" + sentence[end_idx:]
+                else:
+                    # Aspect term not found, use the original sentence
+                    sentence_highlight = sentence
+
+                return sentence_highlight
+
+            # # Example usage:
+            # sentence = "Finally someone is making a noise about this ! About time ! \"Gavaskar , Shastri are biased\" http://t.co/M4qc4M6"
+            # aspect_term = "\"Gavaskar"
+
+            # highlighted_sentence = highlight_aspect_term(sentence, aspect_term)
+            # print(highlighted_sentence)
+            sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
 
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
