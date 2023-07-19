@@ -230,14 +230,13 @@ else:
                 # Handle aspect term at the end of the sentence
                 sentence_highlight = sentence[:len(sentence) - len(aspect_term)] + f"<span style='color:red'>{aspect_term}</span>"
             else:
-                # Handle aspect term within the sentence using regular expression
+                # Handle aspect term within the sentence using regular expression with word boundaries
                 sentence_highlight = re.sub(
                     aspect_term_pattern,
                     lambda match: f"<span style='color:red'>{match.group(0)}</span>",
                     sentence,
                     flags=re.IGNORECASE
                 )
-
 
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
