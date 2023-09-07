@@ -203,10 +203,18 @@ else:
                 # prev_sentiment = df["Sentiment"][st.session_state.question_number]
 
             # The text that is actually shown to the user
-            st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
+            # st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
+            st.markdown(f"<br> {sentence} <br>", unsafe_allow_html=True)
 
             form_key = "my_form"
             with st.form(key=form_key):
+                
+                # set irrelevant
+                irrelevance = st.checkbox(
+                    'This tweet is NOT disaster related (tweet will be excluded)',
+                    value=False,
+                )
+                
                 # chose emotions
                 options = EMOTION_OPTIONS
                 emotion = st.radio(
@@ -215,11 +223,6 @@ else:
                     index=4, 
                     format_func=lambda x: x[1])
 
-                # set irrelevant
-                irrelevance = st.checkbox(
-                    'Check this box if the tweet is IRRELEVANT:',
-                    value=False,
-                )
 
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
