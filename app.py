@@ -211,7 +211,7 @@ else:
                     value=False,
                 )
 
-                st.markdown(f"<br>")
+                st.markdown(f"  ")
                 
                 # chose emotions
                 options = EMOTION_OPTIONS
