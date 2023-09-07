@@ -148,7 +148,7 @@ else:                                                                  # If sess
 
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
-            st.markdown(f"**{source}:**\n\n{text}", unsafe_allow_html=True)             # The text that is actually shown to the user
+            st.markdown(f"**{source}:**\n\n{text}\n\n", unsafe_allow_html=True)             # The text that is actually shown to the user
             for link in str(photo_url).split(','):                                           # Show any images
                 if link != "nan":
                     st.image(link)
