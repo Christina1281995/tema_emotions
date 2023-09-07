@@ -6,6 +6,7 @@ import pandas as pd
 import psycopg2
 import streamlit as st
 import logging
+from st_text_annotator import StTextAnnotator # target annotation
 
 # Set up logging
 # logging.basicConfig(level=logging.DEBUG)
@@ -174,6 +175,9 @@ else:                                                                  # If sess
 
                 # for word in individual_words:
                 #     st.button(f"{word}")
+
+                annotated_text = StTextAnnotator(text)
+                
 
                 # ---- experiment over -----
                 st.markdown(f"  ")
