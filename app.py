@@ -197,17 +197,17 @@ else:
             
             # Set labeling parameters
             # These are the parameters that will be shown upon submission (i.e. for the next round)
-            message_id = df['message_id']
+            message_id = df['message_id'][st.session_state.data_id]
             text = df["text"][st.session_state.data_id]
             source = df['source'][st.session_state.data_id]
             photo_url = str(df['photo_url'][st.session_state.data_id])
 
             # The text that is actually shown to the user
-            st.markdown(f"<br> This tweet is from the {source} dataset. <br> <br> ")
+            st.markdown(f"This tweet is from the {source} dataset.")
             st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
             st.markdown(f"<br> {photo_url} <br> <br> ")
-            # if photo_url != 'NaN':
-            #     st.image(f"{photo_url}")
+            if photo_url != 'nan':
+                st.image(photo_url)
 
             form_key = "my_form"
             with st.form(key=form_key):
@@ -237,7 +237,7 @@ else:
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
                     data = [[st.session_state.data_id, message_id, text, source, emotion_to_add, irrelevance]]
-                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))  # -------------
+                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                 
 
                     # Reset the form elements in session state
