@@ -162,14 +162,14 @@ else:                                                                  # If sess
                 })
 
             output = StTextAnnotator(text)
-            # if output:
-            #     annotations = output["annotations"][0]
-            #     annotated_strings = [annotation["label"] for annotation in annotations]
-            #     target = ", ".join(annotated_strings)
-            # else:
-            #     target = ''
+            if output:
+                annotations = output[0][0]
+                annotated_strings = [annotation["label"] for annotation in annotations]
+                target = ", ".join(annotated_strings)
+            else:
+                target = ''
 
-            st.write(output) 
+            st.write(target) 
 
 
             with st.form(key="my_form"):                            # The actual form                          
