@@ -212,15 +212,18 @@ else:
             with st.form(key=form_key):
                 
                 # set irrelevant
-                irrelevance = st.checkbox(
-                    'This tweet is NOT disaster related (tweet will be excluded)',
-                    # value=False
-                    value=st.session_state.irrelevance
-                )
-
-                st.markdown(f"  ")
+                # irrelevance = st.checkbox(
+                if st.checkbox(
+                    'This tweet is NOT disaster related (tweet will be excluded)'):
+                        # value=False
+                        # value=st.session_state.irrelevance,
+                        irrelevance = True
+                        st.markdown(f"  ")
                 
-                if not irrelevance:
+
+                else:
+                    irrelevance = False
+
                     # chose emotions
                     options = EMOTION_OPTIONS
                     emotion = st.radio(
@@ -230,8 +233,8 @@ else:
                         index=options.index((st.session_state.emotion, st.session_state.emotion)), 
                         format_func=lambda x: x[1])
 
-                    st.markdown(f"  ")
-                    st.markdown(f"  ")
+                st.markdown(f"  ")
+                st.markdown(f"  ")                
 
 
                 if st.form_submit_button("Submit"): 
