@@ -178,7 +178,7 @@ else:                                                                  # If sess
                 # ---- experiment over -----
                 
                 if st.form_submit_button("Submit", on_click=reset):
-                    data = [[st.session_state.data_id, message_id, text, source, emotion, target, irrelevance]]
+                    data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
                     save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                     st.experimental_rerun()
 
