@@ -232,8 +232,8 @@ else:
                     save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
                 
                 
-                # Rerun the app to reset the form elements
-                st.experimental_rerun()
+                    # Rerun the app to reset the form elements
+                    st.experimental_rerun()
 
             # st.write("---")
 
