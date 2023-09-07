@@ -216,7 +216,7 @@ else:
             def reset():
                 # Reset the form elements in session state
                 st.session_state.irrelevance = False
-                st.session_state.emotion = "None"
+                st.session_state.emotion = 4
         
             
             form_key = "my_form"
@@ -237,7 +237,8 @@ else:
                     'Chose the dominant emotion:', 
                     options, 
                     # index=4, 
-                    index=options.index((st.session_state.emotion, st.session_state.emotion)), 
+                    # index=options.index((st.session_state.emotion, st.session_state.emotion)), 
+                    index = st.session_state.emotion,
                     format_func=lambda x: x[1])
 
                 st.markdown(f"  ")
