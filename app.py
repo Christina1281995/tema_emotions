@@ -200,13 +200,14 @@ else:
             message_id = df['message_id']
             text = df["text"][st.session_state.data_id]
             source = df['source'][st.session_state.data_id]
-            photo_url = df['photo_url'][st.session_state.data_id]
+            photo_url = str(df['photo_url'][st.session_state.data_id])
 
             # The text that is actually shown to the user
             st.markdown(f"<br> This tweet is from the {source} dataset. <br> <br> ")
             st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
-            if photo_url != 'NaN':
-                st.image(f"{photo_url}")
+            st.markdown(f"<br> {photo_url} <br> <br> ")
+            # if photo_url != 'NaN':
+            #     st.image(f"{photo_url}")
 
             form_key = "my_form"
             with st.form(key=form_key):
