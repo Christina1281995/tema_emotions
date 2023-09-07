@@ -172,6 +172,8 @@ else:                                                                  # If sess
                     target = ", ".join(annotated_strings)
                 else:
                     target = ''
+
+                st.write(output)
                 # ---- experiment over -----                
 
                 st.markdown(f"  ")
