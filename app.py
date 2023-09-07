@@ -120,7 +120,7 @@ if "emotion" not in st.session_state:
 user_ids = [i["name"] for i in config["users"]]
 
 # Login
-if not st.session_state["start"]:
+if not st.session_state["start"]:                                       # If session_state["start"] == False
 
     user_name = st.text_input('Please enter your username')             # Prompt for user name
     if user_name:
@@ -138,93 +138,46 @@ if not st.session_state["start"]:
     else:
         st.write('Username not found')
 
-# If session_state["start"] == True
-else:
-    # Get pre-loaded data that is assigned to the username
-    if config["predefined"]:
-        path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
-        df = pd.read_csv(path)
+else:                                                                  # If session_state["start"] == True
+    # Load Data
+    path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
+    df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
-    else:
-        with st.expander("Upload data", expanded=st.session_state.expander):
-            # load data 
-            uploaded_data = st.file_uploader("Csv file", type = ['.csv'])
-            df = load_data(uploaded_data)
-            st.info("Upload data")
-            st.session_state.expander = False
+    if df is not None:                                                                  # If there is data
+        st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
 
-    # If there is data
-    if df is not None:
+        if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
+            message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
+            st.markdown(f"**{source}:**\n\n{text}", unsafe_allow_html=True)             # The text that is actually shown to the user
+            for link in photo_url.split(','):                                           # Show any images
+                st.image(link)
+
+            def reset():                                                                # Reset session elements for form
+                st.session_state.update({
+                    "irrelevance": False,
+                    "emotion": "None"
+                })
         
-        # Show current progress
-        percentage_progress = round((int(st.session_state.data_id) / len(df)) * 100)
-        if percentage_progress < 100:
-            st.progress(percentage_progress)
-        else:
-            st.progress(100)
-
-        # If we haven't reached the end of the labeling task yet
-        if st.session_state.data_id < len(df):
-            
-            # Set labeling parameters
-            # These are the parameters that will be shown upon submission (i.e. for the next round)
-            message_id = df['message_id'][st.session_state.data_id]
-            text = df["text"][st.session_state.data_id]
-            source = df['source'][st.session_state.data_id]
-            photo_url = str(df['photo_url'][st.session_state.data_id])
-            links_list = photo_url.split(',')
-
-            # The text that is actually shown to the user
-            st.markdown(f"**{source}:**")
-            st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
-            if photo_url != 'nan':
-                if len(links_list) == 1:
-                    st.image(links_list[0])
-                else: 
-                    for i in range(len(links_list)):
-                        st.image(links_list[i])
-
-            def reset():
-                # Reset the form elements in session state
-                st.session_state.irrelevance = False
-                st.session_state.emotion = "None"
-        
-            
-            form_key = "my_form"
-            with st.form(key=form_key):
-                
-                # set irrelevant
-                irrelevance = st.checkbox(
-                    'This tweet is NOT disaster related (tweet will be excluded)',
-                    # value=False
-                    value=st.session_state.irrelevance
-                )
-
+            with st.form(key="my_form"):                            # The actual form                          
+                irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
                 st.markdown(f"  ")
-                
+                emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)))
                 # chose emotions
-                options = EMOTION_OPTIONS
-                emotion = st.radio(
-                    'Chose the dominant emotion:', 
-                    options, 
-                    # index=4, 
-                    index=options.index((st.session_state.emotion, st.session_state.emotion)), 
-                    # index = st.session_state.emotion,
-                    format_func=lambda x: x[1])
-
+                # options = EMOTION_OPTIONS
+                # emotion = st.radio(
+                #     'Chose the dominant emotion:', 
+                #     options, 
+                #     # index=4, 
+                #     index=options.index((st.session_state.emotion, st.session_state.emotion)), 
+                #     # index = st.session_state.emotion,
+                #     format_func=lambda x: x[1])
                 st.markdown(f"  ")
                 st.markdown(f"  ")
-
-
-                if st.form_submit_button("Submit", on_click=reset): 
-                    emotion_to_add = emotion[0]
-                    data = [[st.session_state.data_id, message_id, text, source, emotion_to_add, irrelevance]]
-                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                 
-                    
-                    # Rerun the app to reset the form elements
+                if st.form_submit_button("Submit", on_click=reset):
+                    data = [[st.session_state.data_id, message_id, text, source, emotion, irrelevance]]
+                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                     st.experimental_rerun()
-
             # st.write("---")
 
         else:
