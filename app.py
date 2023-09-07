@@ -150,7 +150,8 @@ else:                                                                  # If sess
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
             st.markdown(f"**{source}:**\n\n{text}", unsafe_allow_html=True)             # The text that is actually shown to the user
             for link in str(photo_url).split(','):                                           # Show any images
-                st.image(link)
+                if link !=  "NaN":
+                    st.image(link)
 
             def reset():                                                                # Reset session elements for form
                 st.session_state.update({
