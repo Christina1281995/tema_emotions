@@ -7,12 +7,11 @@ import psycopg2
 import streamlit as st
 import logging
 
-logging.basicConfig(level=logging.DEBUG)  # Set the logging level
+# Set up logging
+# logging.basicConfig(level=logging.DEBUG)
 
 
-# --------- Constants ---------
-
-# data structure= , data_id, message_id, date, text, tweet_lang, place, photo_url, geometry, source
+# Constants
 
 CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
 (
@@ -29,9 +28,10 @@ CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
 EMOTION_OPTIONS = [('Anger', 'Anger'), ('Sadness', 'Sadness'), ('Happiness', 'Happiness'), ('Fear', 'Fear'), ('None', 'None')]
 
 
-# --------- Functions ---------
+# Functions
 
 def connect_to_database():
+    """Connect to the PostgreSQL database."""
     try:
         conn = psycopg2.connect(
             host=st.secrets["db_host"],
@@ -45,8 +45,10 @@ def connect_to_database():
         logging.debug("Error connecting to the database:", e)
         return None
 
+
 @st.cache_data
 def load_data(upload_obj):
+    """Load data from uploaded CSV."""
     if upload_obj is None:
         return None
     try:
@@ -57,48 +59,38 @@ def load_data(upload_obj):
 
 
 def save_results(data):
-    # Connect to the PostgreSQL database
-    conn = connect_to_database()
+    """Save results to the database."""
+
+    conn = connect_to_database()                    # Connect to db
     if not conn:
         return
 
-    # Create a cursor to execute queries
-    cursor = conn.cursor()
+    cursor = conn.cursor()                          # Create cursor to execute queries
+    cursor.execute(CREATE_TABLE_QUERY)              # Create a new table if it doesn't exist
 
-    # Create a new table if it doesn't exist
-    cursor.execute(CREATE_TABLE_QUERY)
-
-    # Insert the data into the table
-    for row in data.to_dict(orient='records'):
+    for row in data.to_dict(orient='records'):      # Insert the data into the table
         insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, emotion, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s);"
         values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['emotion'], row['irrelevance'])
         cursor.execute(insert_query, values)
 
-    # Increment Number
-    st.session_state["data_id"] += 1  # Increment the question number for the next row
-
-    # Commit the changes and close the connection
-    conn.commit()
+    st.session_state["data_id"] += 1                # Increment the question number for the next row
+    conn.commit()                                   # Commit the changes and close the connection
     conn.close()
 
 
 def get_user_data(user_id):
-    # Connect to the PostgreSQL database
-    conn = connect_to_database()
+    """Retrieve user data from the database."""
+
+    conn = connect_to_database()                # Connect to the PostgreSQL database
     if not conn:
         return None
 
-    # Create a cursor to execute queries
-    cursor = conn.cursor()
-
-    # Query the database to get the user's data
-    query = "SELECT * FROM results WHERE author = %s ORDER BY data_id DESC LIMIT 1;"
+    cursor = conn.cursor()                      # Create a cursor to execute queries
+    query = "SELECT * FROM results WHERE author = %s ORDER BY data_id DESC LIMIT 1;"   # Query the database to get the user's data
     values = (user_id,)
     cursor.execute(query, values)
     result = cursor.fetchone()
-
-    # Close the connection
-    conn.close()
+    conn.close()                                # Close the connection
 
     return result
 
@@ -107,31 +99,27 @@ def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
 
-# --------- App ---------
+# App
 
 # Load config file
 with open('config.json') as f:
     config = json.load(f)
 
-# Set title
 st.title('Emotion Labeling for TEMA')
 
-# Set initial state
+# Initialize session state
 if "start" not in st.session_state:
     st.session_state["start"] = False
-
-if "expander" not in st.session_state:
-    st.session_state["expander"] = True
-
+# if "expander" not in st.session_state:
+#     st.session_state["expander"] = True
 if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
-
 if "emotion" not in st.session_state:
     st.session_state.emotion = "None"
 
 user_ids = [i["name"] for i in config["users"]]
 
-# For logging in
+# Login
 if st.session_state["start"] == False:
 
     # Prompt for user name
@@ -251,10 +239,6 @@ else:
                     data = [[st.session_state.data_id, message_id, text, source, emotion_to_add, irrelevance]]
                     save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                 
-
-                    # # Reset the form elements in session state
-                    # st.session_state.irrelevance = False
-                    # st.session_state.emotion = "None"
                     
                     # Rerun the app to reset the form elements
                     st.experimental_rerun()
