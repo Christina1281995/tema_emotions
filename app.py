@@ -127,7 +127,7 @@ if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
 
 if "emotion" not in st.session_state:
-    st.session_state.emotion = "None"
+    st.session_state.emotion = 4
 
 user_ids = [i["name"] for i in config["users"]]
 
@@ -161,6 +161,7 @@ if st.session_state["start"] == False:
         st.session_state["emotions"] = []
         st.session_state.user_id = str(user_name)
         st.session_state["data_id"] = data_id
+        st.session_state.data_id = data_id
         
         st.button("Start Labeling")
 
