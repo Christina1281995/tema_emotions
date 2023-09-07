@@ -213,6 +213,12 @@ else:
                     for i in range(len(links_list)):
                         st.image(links_list[i])
 
+            def reset():
+                # Reset the form elements in session state
+                st.session_state.irrelevance = False
+                st.session_state.emotion = "None"
+        
+            
             form_key = "my_form"
             with st.form(key=form_key):
                 
@@ -238,15 +244,15 @@ else:
                 st.markdown(f"  ")
 
 
-                if st.form_submit_button("Submit"): 
+                if st.form_submit_button("Submit", on_click=reset): 
                     emotion_to_add = emotion[0]
                     data = [[st.session_state.data_id, message_id, text, source, emotion_to_add, irrelevance]]
                     save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                 
 
-                    # Reset the form elements in session state
-                    st.session_state.irrelevance = False
-                    st.session_state.emotion = "None"
+                    # # Reset the form elements in session state
+                    # st.session_state.irrelevance = False
+                    # st.session_state.emotion = "None"
                     
                     # Rerun the app to reset the form elements
                     st.experimental_rerun()
