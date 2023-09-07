@@ -204,9 +204,8 @@ else:
             links_list = photo_url.split(',')
 
             # The text that is actually shown to the user
-            st.markdown(f"{source}")
+            st.markdown(f"_**{source}**_")
             st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
-            # st.markdown(f"<br> {photo_url} <br> <br> ")
             if photo_url != 'nan':
                 if len(links_list) == 1:
                     st.image(links_list[0])
