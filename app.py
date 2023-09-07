@@ -213,14 +213,14 @@ else:
             sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
 
             st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
-            st.markdown(f"**Aspect Term:** {aspect_term}")
+            # st.markdown(f"**Aspect Term:** {aspect_term}")
             # st.markdown(f"**Sentiment:** {sentiment}")  # Leave out sentiment to not bias labeller 
 
             form_key = "my_form"
             with st.form(key=form_key):
                 options = EMOTION_OPTIONS
                 emotion = st.radio(
-                    'Assign an emotion to the aspect phrase', 
+                    'Chose the most likely emotion:', 
                     options, 
                     index=4, 
                     format_func=lambda x: x[1])
