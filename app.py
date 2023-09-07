@@ -67,8 +67,8 @@ def save_results(data):
 
     # Insert the data into the table
     for row in data.to_dict(orient='records'):
-        insert_query = "INSERT INTO results (id, author, tweet_id, emotion, sentence, aspect_term, sentiment) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s);"
-        values = (st.session_state.user_id, row['q_num'], row['emotions'], row['sentence'], row['aspect_term'], row['sentiment'])
+        insert_query = "INSERT INTO results (id, author, tweet_id, emotion, sentence) VALUES (DEFAULT, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['q_num'], row['emotions'], row['sentence'])
         cursor.execute(insert_query, values)
 
     # Increment Number
@@ -189,32 +189,22 @@ else:
             # Set labeling parameters
             # These are the parameters that will be shown upon submission (i.e. for the next round)
             sentence = df["Sentence"][st.session_state.question_number]
-            aspect_term = df["Aspect Terms"][st.session_state.question_number]
-            sentiment = df["Sentiment"][st.session_state.question_number]
+            # aspect_term = df["Aspect Terms"][st.session_state.question_number]
+            # sentiment = df["Sentiment"][st.session_state.question_number]
 
             # These are the parameters to submit when button hits submit (i.e. the parameters currently shown --> index -1)
             if st.session_state.question_number != 0:
                 prev_sentence = df["Sentence"][st.session_state.question_number - 1]
-                prev_aspect_term = df["Aspect Terms"][st.session_state.question_number - 1]
-                prev_sentiment = df["Sentiment"][st.session_state.question_number - 1]
+                # prev_aspect_term = df["Aspect Terms"][st.session_state.question_number - 1]
+                # prev_sentiment = df["Sentiment"][st.session_state.question_number - 1]
             # In the very first round (index = 0) use the current sentence
             else:
                 prev_sentence = df["Sentence"][st.session_state.question_number]
-                prev_aspect_term = df["Aspect Terms"][st.session_state.question_number]
-                prev_sentiment = df["Sentiment"][st.session_state.question_number]
+                # prev_aspect_term = df["Aspect Terms"][st.session_state.question_number]
+                # prev_sentiment = df["Sentiment"][st.session_state.question_number]
 
-            # Highlight aspect term in the sentence           
-            # def highlight_aspect_term(sentence, aspect_term):
-            #     aspect_term_pattern = re.escape(aspect_term)
-            #     pattern = r"(?<![^\W_])" + aspect_term_pattern + r"(?![^\W_])"
-            #     sentence_highlighted = re.sub(pattern, r"<span style='color:red'>\g<0></span>", sentence, flags=re.IGNORECASE)
-            #     return sentence_highlighted
-
-            # sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
-
+            # The text that is actually shown to the user
             st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
-            # st.markdown(f"**Aspect Term:** {aspect_term}")
-            # st.markdown(f"**Sentiment:** {sentiment}")  # Leave out sentiment to not bias labeller 
 
             form_key = "my_form"
             with st.form(key=form_key):
@@ -227,9 +217,9 @@ else:
 
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
-                    data = [[st.session_state.question_number, emotion_to_add, prev_sentence, prev_aspect_term, prev_sentiment]]
+                    data = [[st.session_state.question_number, emotion_to_add, prev_sentence]]
                     print(data)
-                    save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence", "aspect_term", "sentiment"]))
+                    save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence"]))
                     
             st.write("---")
 
