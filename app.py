@@ -161,28 +161,21 @@ else:                                                                  # If sess
         
             with st.form(key="my_form"):                            # The actual form                          
                 irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
-                
                 st.markdown(f"  ")
-                
                 emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
-                # chose emotions
-                # options = EMOTION_OPTIONS
-                # emotion = st.radio(
-                #     'Chose the dominant emotion:', 
-                #     options, 
-                #     # index=4, 
-                #     index=options.index((st.session_state.emotion, st.session_state.emotion)), 
-                #     # index = st.session_state.emotion,
-                #     format_func=lambda x: x[1])
-                
                 st.markdown(f"  ")
                 st.markdown(f"  ")
+
+                # expriment with target function
+                individual_words = text.split(' ')
+                target = st.selectbox('What is the target of this emotion?', individual_words
+                )
+                st.write('you chose: ', target)
                 
                 if st.form_submit_button("Submit", on_click=reset):
                     data = [[st.session_state.data_id, message_id, text, source, emotion, irrelevance]]
                     save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
                     st.experimental_rerun()
-            # st.write("---")
 
         else:
             st.markdown("End of data.")
