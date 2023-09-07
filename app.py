@@ -111,7 +111,7 @@ with open('config.json') as f:
     config = json.load(f)
 
 # Set title
-st.title('Aspect-Based Emotion Labeling')
+st.title('Emotion Labeling for TEMA')
 
 # Set initial state
 if "start" not in st.session_state:
