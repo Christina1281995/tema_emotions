@@ -22,6 +22,7 @@ CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
     text text COLLATE pg_catalog."default",
     source text COLLATE pg_catalog."default",
     emotion text COLLATE pg_catalog."default",
+    target text COLLATE pg_catalog."default",
     irrelevance boolean
 );'''
 
@@ -69,8 +70,8 @@ def save_results(data):
     cursor.execute(CREATE_TABLE_QUERY)              # Create a new table if it doesn't exist
 
     for row in data.to_dict(orient='records'):      # Insert the data into the table
-        insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, emotion, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s);"
-        values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['emotion'], row['irrelevance'])
+        insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, emotion, target, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['emotion'], row['target'], row['irrelevance'])
         cursor.execute(insert_query, values)
 
     st.session_state["data_id"] += 1                # Increment the question number for the next row
@@ -167,10 +168,9 @@ else:                                                                  # If sess
                 st.markdown(f"  ")
 
                 # ----- expriment with target function ----
-                individual_words = text.split(' ')
-                target = st.selectbox('What is the target of this emotion?', individual_words
-                )
-                st.write('you chose: ', target)
+                # individual_words = text.split(' ')
+                target = st.selectbox('What is the target of this emotion?', text.split(' '))
+                # st.write('you chose: ', target)
 
                 # for word in individual_words:
                 #     st.button(f"{word}")
@@ -178,8 +178,8 @@ else:                                                                  # If sess
                 # ---- experiment over -----
                 
                 if st.form_submit_button("Submit", on_click=reset):
-                    data = [[st.session_state.data_id, message_id, text, source, emotion, irrelevance]]
-                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))
+                    data = [[st.session_state.data_id, message_id, text, source, emotion, target, irrelevance]]
+                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                     st.experimental_rerun()
 
         else:
