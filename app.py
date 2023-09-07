@@ -228,9 +228,13 @@ else:
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
                     data = [[st.session_state.question_number, prev_sentence, emotion_to_add, irrelevance]]
-                    print(data)
+                    # print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
-                    
+                
+                
+                # Rerun the app to reset the form elements
+                st.experimental_rerun()
+
             # st.write("---")
 
         else:
