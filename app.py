@@ -160,10 +160,6 @@ else:                                                                  # If sess
                     "irrelevance": False,
                     "emotion": "None"
                 })
-        
-            with st.form(key="my_form"):                            # The actual form                          
-                
-                # ----- expriment with target function ----
 
                 output = StTextAnnotator(text)
                 if output:
@@ -173,7 +169,13 @@ else:                                                                  # If sess
                 else:
                     target = ''
 
-                st.write(output)
+                st.write(output) 
+                
+                       
+            with st.form(key="my_form"):                            # The actual form                          
+                
+                # ----- expriment with target function ----
+
                 # ---- experiment over -----                
 
                 st.markdown(f"  ")
