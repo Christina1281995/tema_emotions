@@ -119,6 +119,12 @@ if "start" not in st.session_state:
 if "expander" not in st.session_state:
     st.session_state["expander"] = True
 
+if "irrelevance" not in st.session_state:
+    st.session_state.irrelevance = False
+
+if "emotion" not in st.session_state:
+    st.session_state.emotion = "None"
+
 user_ids = [i["name"] for i in config["users"]]
 
 # For logging in
@@ -208,7 +214,8 @@ else:
                 # set irrelevant
                 irrelevance = st.checkbox(
                     'This tweet is NOT disaster related (tweet will be excluded)',
-                    value=False,
+                    # value=False
+                    value=st.session_state.irrelevance
                 )
 
                 st.markdown(f"  ")
@@ -218,7 +225,8 @@ else:
                 emotion = st.radio(
                     'Chose the most likely emotion:', 
                     options, 
-                    index=4, 
+                    # index=4, 
+                    index=options.index((st.session_state.emotion, st.session_state.emotion)), 
                     format_func=lambda x: x[1])
 
                 st.markdown(f"  ")
@@ -231,7 +239,10 @@ else:
                     # print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
                 
-                
+                    # Reset the form elements in session state
+                    st.session_state.irrelevance = False
+                    st.session_state.emotion = "None"
+                    
                     # Rerun the app to reset the form elements
                     st.experimental_rerun()
 
