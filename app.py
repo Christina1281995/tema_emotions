@@ -19,7 +19,7 @@ CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
     id SERIAL PRIMARY KEY,
     author text COLLATE pg_catalog."default",
     data_id integer,
-    message_id integer, 
+    message_id BIGINT, 
     text text COLLATE pg_catalog."default",
     source text COLLATE pg_catalog."default",
     emotion text COLLATE pg_catalog."default",
