@@ -172,8 +172,8 @@ else:                                                                  # If sess
                 )
                 st.write('you chose: ', target)
 
-                for word in individual_words:
-                    st.button(f"{word}")
+                # for word in individual_words:
+                #     st.button(f"{word}")
 
                 # ---- experiment over -----
                 
