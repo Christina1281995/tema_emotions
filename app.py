@@ -166,11 +166,16 @@ else:                                                                  # If sess
                 st.markdown(f"  ")
                 st.markdown(f"  ")
 
-                # expriment with target function
+                # ----- expriment with target function ----
                 individual_words = text.split(' ')
                 target = st.selectbox('What is the target of this emotion?', individual_words
                 )
                 st.write('you chose: ', target)
+
+                for word in individual_words:
+                    st.button(f"{word}")
+
+                # ---- experiment over -----
                 
                 if st.form_submit_button("Submit", on_click=reset):
                     data = [[st.session_state.data_id, message_id, text, source, emotion, irrelevance]]
