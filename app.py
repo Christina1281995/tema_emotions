@@ -201,13 +201,18 @@ else:
             text = df["text"][st.session_state.data_id]
             source = df['source'][st.session_state.data_id]
             photo_url = str(df['photo_url'][st.session_state.data_id])
+            links_list = photo_url.split(',')
 
             # The text that is actually shown to the user
-            st.markdown(f"This tweet is from the {source} dataset.")
+            st.markdown(f"{source}")
             st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
-            st.markdown(f"<br> {photo_url} <br> <br> ")
+            # st.markdown(f"<br> {photo_url} <br> <br> ")
             if photo_url != 'nan':
-                st.image(photo_url)
+                if len(links_list) == 1:
+                    st.image(links_list[0])
+                else: 
+                    for i in range(len(links_list)):
+                        st.image(links_list[i])
 
             form_key = "my_form"
             with st.form(key=form_key):
