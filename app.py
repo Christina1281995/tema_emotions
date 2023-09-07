@@ -144,7 +144,7 @@ if st.session_state["start"] == False:
         if user_data is not None:
             
             # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] # - 1  # Assuming the 'data_id' column is the first column in the table
+            question_number = user_data[2] + 1  # Assuming the 'data_id' column is the first column in the table
 
         # If user hasn't done any labelling yet, set question number to 0
         else:
