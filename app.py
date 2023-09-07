@@ -7,6 +7,7 @@ import psycopg2
 import streamlit as st
 import logging
 from st_text_annotator import StTextAnnotator # target annotation
+import json
 
 # Set up logging
 # logging.basicConfig(level=logging.DEBUG)
@@ -165,7 +166,7 @@ else:                                                                  # If sess
             if output:
                 annotations = output[0][0]
                 # annotated_strings = [annotation["label"] for annotation in annotations]
-                target = annotations
+                target = json.dumps(annotations)
             else:
                 target = ''
 
