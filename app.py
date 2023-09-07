@@ -161,8 +161,10 @@ else:                                                                  # If sess
         
             with st.form(key="my_form"):                            # The actual form                          
                 irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
+                
                 st.markdown(f"  ")
-                emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)))
+                
+                emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
                 # chose emotions
                 # options = EMOTION_OPTIONS
                 # emotion = st.radio(
@@ -172,6 +174,7 @@ else:                                                                  # If sess
                 #     index=options.index((st.session_state.emotion, st.session_state.emotion)), 
                 #     # index = st.session_state.emotion,
                 #     format_func=lambda x: x[1])
+                
                 st.markdown(f"  ")
                 st.markdown(f"  ")
                 
