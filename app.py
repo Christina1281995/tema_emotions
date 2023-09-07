@@ -88,7 +88,7 @@ def get_user_data(user_id):
     cursor = conn.cursor()
 
     # Query the database to get the user's data
-    query = "SELECT * FROM results WHERE author = %s ORDER BY tweet_id DESC LIMIT 1;"
+    query = "SELECT * FROM results WHERE author = %s ORDER BY data_id DESC LIMIT 1;"
     values = (user_id,)
     cursor.execute(query, values)
     result = cursor.fetchone()
