@@ -176,6 +176,8 @@ else:                                                                  # If sess
                 #     st.button(f"{word}")
 
                 # ---- experiment over -----
+                st.markdown(f"  ")
+                st.markdown(f"  ")
                 
                 if st.form_submit_button("Submit", on_click=reset):
                     data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
