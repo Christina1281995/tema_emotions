@@ -161,17 +161,17 @@ else:                                                                  # If sess
                     "emotion": "None"
                 })
 
-                output = StTextAnnotator(text)
-                if output:
-                    annotations = output["annotations"][0]
-                    annotated_strings = [annotation["label"] for annotation in annotations]
-                    target = ", ".join(annotated_strings)
-                else:
-                    target = ''
+            output = StTextAnnotator(text)
+            if output:
+                annotations = output["annotations"][0]
+                annotated_strings = [annotation["label"] for annotation in annotations]
+                target = ", ".join(annotated_strings)
+            else:
+                target = ''
 
-                st.write(output) 
-                
-                       
+            st.write(output) 
+
+
             with st.form(key="my_form"):                            # The actual form                          
                 
                 # ----- expriment with target function ----
