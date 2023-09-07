@@ -12,15 +12,14 @@ logging.basicConfig(level=logging.DEBUG)  # Set the logging level
 
 # --------- Constants ---------
 
-CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS results (
-    id serial NOT NULL,
-    author text,
+CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
+(
+    id SERIAL PRIMARY KEY,
+    author text COLLATE pg_catalog."default",
     tweet_id integer,
-    emotion text,
-    sentence text,
-    aspect_term text,
-    sentiment text,
-    PRIMARY KEY (id)
+    sentence text COLLATE pg_catalog."default",
+    emotion text COLLATE pg_catalog."default",
+    irrelevance boolean
 );'''
 
 EMOTION_OPTIONS = [('Anger', 'Anger'), ('Sadness', 'Sadness'), ('Happiness', 'Happiness'), ('Fear', 'Fear'), ('None', 'None')]
@@ -67,8 +66,8 @@ def save_results(data):
 
     # Insert the data into the table
     for row in data.to_dict(orient='records'):
-        insert_query = "INSERT INTO results (id, author, tweet_id, emotion, sentence) VALUES (DEFAULT, %s, %s, %s, %s);"
-        values = (st.session_state.user_id, row['q_num'], row['emotions'], row['sentence'])
+        insert_query = "INSERT INTO results (id, author, tweet_id, sentence, emotion, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['q_num'], row['sentence'], row['emotion'], row['irrelevance'])
         cursor.execute(insert_query, values)
 
     # Increment Number
@@ -208,6 +207,7 @@ else:
 
             form_key = "my_form"
             with st.form(key=form_key):
+                # chose emotions
                 options = EMOTION_OPTIONS
                 emotion = st.radio(
                     'Chose the most likely emotion:', 
@@ -215,11 +215,17 @@ else:
                     index=4, 
                     format_func=lambda x: x[1])
 
+                # set irrelevant
+                irrelevance = st.checkbox(
+                    'Check this box if the tweet is IRRELEVANT:',
+                    value=False,
+                )
+
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
-                    data = [[st.session_state.question_number, emotion_to_add, prev_sentence]]
+                    data = [[st.session_state.question_number, prev_sentence, emotion_to_add, irrelevance]]
                     print(data)
-                    save_results(pd.DataFrame(data, columns=["q_num", "emotions", "sentence"]))
+                    save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
                     
             st.write("---")
 
