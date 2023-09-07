@@ -204,7 +204,7 @@ else:
 
             # The text that is actually shown to the user
             # st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
-            st.markdown(f"<br> {sentence} <br>", unsafe_allow_html=True)
+            st.markdown(f"<br> {sentence} <br> <br> ", unsafe_allow_html=True)
 
             form_key = "my_form"
             with st.form(key=form_key):
