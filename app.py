@@ -221,6 +221,9 @@ else:
                     index=4, 
                     format_func=lambda x: x[1])
 
+                st.markdown(f"  ")
+                st.markdown(f"  ")
+
 
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
