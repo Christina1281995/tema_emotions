@@ -110,7 +110,7 @@ with open('config.json') as f:
     config = json.load(f)
 
 # Set title
-st.header('Emotion Labeling for TEMA')
+st.title('Emotion Labeling for TEMA')
 
 # Set initial state
 if "start" not in st.session_state:
@@ -220,17 +220,18 @@ else:
 
                 st.markdown(f"  ")
                 
-                # chose emotions
-                options = EMOTION_OPTIONS
-                emotion = st.radio(
-                    'Chose the most likely emotion:', 
-                    options, 
-                    # index=4, 
-                    index=options.index((st.session_state.emotion, st.session_state.emotion)), 
-                    format_func=lambda x: x[1])
+                if not irrelevance:
+                    # chose emotions
+                    options = EMOTION_OPTIONS
+                    emotion = st.radio(
+                        'Chose the most likely emotion:', 
+                        options, 
+                        # index=4, 
+                        index=options.index((st.session_state.emotion, st.session_state.emotion)), 
+                        format_func=lambda x: x[1])
 
-                st.markdown(f"  ")
-                st.markdown(f"  ")
+                    st.markdown(f"  ")
+                    st.markdown(f"  ")
 
 
                 if st.form_submit_button("Submit"): 
