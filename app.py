@@ -127,7 +127,7 @@ if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
 
 if "emotion" not in st.session_state:
-    st.session_state.emotion = 4
+    st.session_state.emotion = "None"
 
 user_ids = [i["name"] for i in config["users"]]
 
@@ -217,7 +217,7 @@ else:
             def reset():
                 # Reset the form elements in session state
                 st.session_state.irrelevance = False
-                st.session_state.emotion = 4
+                st.session_state.emotion = "None"
         
             
             form_key = "my_form"
@@ -239,7 +239,7 @@ else:
                     options, 
                     # index=4, 
                     # index=options.index((st.session_state.emotion, st.session_state.emotion)), 
-                    index = int(st.session_state.emotion),
+                    index = st.session_state.emotion,
                     format_func=lambda x: x[1])
 
                 st.markdown(f"  ")
