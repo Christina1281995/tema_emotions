@@ -204,15 +204,15 @@ else:
                 prev_sentiment = df["Sentiment"][st.session_state.question_number]
 
             # Highlight aspect term in the sentence           
-            def highlight_aspect_term(sentence, aspect_term):
-                aspect_term_pattern = re.escape(aspect_term)
-                pattern = r"(?<![^\W_])" + aspect_term_pattern + r"(?![^\W_])"
-                sentence_highlighted = re.sub(pattern, r"<span style='color:red'>\g<0></span>", sentence, flags=re.IGNORECASE)
-                return sentence_highlighted
+            # def highlight_aspect_term(sentence, aspect_term):
+            #     aspect_term_pattern = re.escape(aspect_term)
+            #     pattern = r"(?<![^\W_])" + aspect_term_pattern + r"(?![^\W_])"
+            #     sentence_highlighted = re.sub(pattern, r"<span style='color:red'>\g<0></span>", sentence, flags=re.IGNORECASE)
+            #     return sentence_highlighted
 
-            sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
+            # sentence_highlight =  highlight_aspect_term(sentence, aspect_term)
 
-            st.markdown(f"**Sentence:** {sentence_highlight}", unsafe_allow_html=True)
+            st.markdown(f"**Sentence:** {sentence}", unsafe_allow_html=True)
             # st.markdown(f"**Aspect Term:** {aspect_term}")
             # st.markdown(f"**Sentiment:** {sentiment}")  # Leave out sentiment to not bias labeller 
 
