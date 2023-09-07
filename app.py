@@ -12,12 +12,16 @@ logging.basicConfig(level=logging.DEBUG)  # Set the logging level
 
 # --------- Constants ---------
 
+# data structure= , data_id, message_id, date, text, tweet_lang, place, photo_url, geometry, source
+
 CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
 (
     id SERIAL PRIMARY KEY,
     author text COLLATE pg_catalog."default",
-    tweet_id integer,
-    sentence text COLLATE pg_catalog."default",
+    data_id integer,
+    message_id integer, 
+    text text COLLATE pg_catalog."default",
+    source text COLLATE pg_catalog."default",
     emotion text COLLATE pg_catalog."default",
     irrelevance boolean
 );'''
@@ -66,12 +70,12 @@ def save_results(data):
 
     # Insert the data into the table
     for row in data.to_dict(orient='records'):
-        insert_query = "INSERT INTO results (id, author, data_id, sentence, emotion, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s);"
-        values = (st.session_state.user_id, row['q_num'], row['sentence'], row['emotion'], row['irrelevance'])
+        insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, emotion, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['emotion'], row['irrelevance'])
         cursor.execute(insert_query, values)
 
     # Increment Number
-    st.session_state["question_number"] += 1  # Increment the question number for the next row
+    st.session_state["data_id"] += 1  # Increment the question number for the next row
 
     # Commit the changes and close the connection
     conn.commit()
@@ -144,19 +148,19 @@ if st.session_state["start"] == False:
         if user_data is not None:
             
             # If user is returning, retrieve their previous data for current question number
-            question_number = user_data[2] + 1  # Assuming the 'data_id' column is the first column in the table
+            data_id = user_data[2] + 1  # Assuming the 'data_id' column is the first column in the table
 
         # If user hasn't done any labelling yet, set question number to 0
         else:
             # User is new, initialize question number to 0
-            question_number = 0
+            data_id = 0
 
         st.session_state["start"] = True
         # defining our Session State
-        st.session_state["q_num"] = []
+        st.session_state["data_id"] = []
         st.session_state["emotions"] = []
         st.session_state.user_id = str(user_name)
-        st.session_state["question_number"] = question_number
+        st.session_state["data_id"] = data_id
         
         st.button("Start Labeling")
 
@@ -182,32 +186,27 @@ else:
     if df is not None:
         
         # Show current progress
-        percentage_progress = round((int(st.session_state.question_number) / len(df)) * 100)
+        percentage_progress = round((int(st.session_state.data_id) / len(df)) * 100)
         if percentage_progress < 100:
             st.progress(percentage_progress)
         else:
             st.progress(100)
 
         # If we haven't reached the end of the labeling task yet
-        if st.session_state.question_number < len(df):
+        if st.session_state.data_id < len(df):
             
             # Set labeling parameters
             # These are the parameters that will be shown upon submission (i.e. for the next round)
-            sentence = df["Sentence"][st.session_state.question_number]
-
-
-            # These are the parameters to submit when button hits submit (i.e. the parameters currently shown --> index -1)
-            if st.session_state.question_number != 0:
-                # prev_sentence = df["Sentence"][st.session_state.question_number - 1]
-                prev_sentence = df["Sentence"][st.session_state.question_number]
-
-            # In the very first round (index = 0) use the current sentence
-            else:
-                prev_sentence = df["Sentence"][st.session_state.question_number]
-
+            message_id = df['message_id']
+            text = df["text"][st.session_state.data_id]
+            source = df['source'][st.session_state.data_id]
+            photo_url = df['photo_url'][st.session_state.data_id]
 
             # The text that is actually shown to the user
-            st.markdown(f"<br> {sentence} <br> <br> ", unsafe_allow_html=True)
+            st.markdown(f"<br> This tweet is from the {source} dataset. <br> <br> ")
+            st.markdown(f"<br> {text} <br> <br> ", unsafe_allow_html=True)
+            if photo_url != 'NaN':
+                st.image(f"{photo_url}")
 
             form_key = "my_form"
             with st.form(key=form_key):
@@ -236,9 +235,10 @@ else:
 
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
-                    data = [[st.session_state.question_number, prev_sentence, emotion_to_add, irrelevance]]
-                    save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
+                    data = [[st.session_state.data_id, message_id, text, source, emotion_to_add, irrelevance]]
+                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "irrelevance"]))  # -------------
                 
+
                     # Reset the form elements in session state
                     st.session_state.irrelevance = False
                     st.session_state.emotion = "None"

@@ -3,37 +3,37 @@
         {
             "id": 1,
             "name": "Christina",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         }, 
 
         {
             "id": 2,
             "name": "David",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         },
 
         {
             "id": 3,
             "name": "Polydoros",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         },
         
         {
             "id": 4,
             "name": "Fotios",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         },
         
         {
             "id": 5,
             "name": "Person5",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         },
                 
         {
             "id": 6,
             "name": "Person6",
-            "data_path": "data/subset_data.csv"
+            "data_path": "data/tema_wildfires_dataset.csv"
         }
     ],
     "predefined": true
