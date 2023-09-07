@@ -120,37 +120,19 @@ if "emotion" not in st.session_state:
 user_ids = [i["name"] for i in config["users"]]
 
 # Login
-if st.session_state["start"] == False:
+if not st.session_state["start"]:
 
-    # Prompt for user name
-    user_name = st.text_input('Please enter your username')
-    
-    if user_name != '':
-        
-        st.write('Username:', user_name)
-        
-        # Get database data on user
-        user_data = get_user_data(user_name)
+    user_name = st.text_input('Please enter your username')             # Prompt for user name
+    if user_name:
+        st.write('Username:', user_name)       
+        user_data = get_user_data(user_name)                            # Get database data on user
+        data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
 
-        # If user already exists, return the current question number
-        if user_data is not None:
-            
-            # If user is returning, retrieve their previous data for current question number
-            data_id = user_data[2] + 1  # Assuming the 'data_id' column is the first column in the table
-
-        # If user hasn't done any labelling yet, set question number to 0
-        else:
-            # User is new, initialize question number to 0
-            data_id = 0
-
-        st.session_state["start"] = True
-        # defining our Session State
-        st.session_state["data_id"] = []
-        st.session_state["emotions"] = []
-        st.session_state.user_id = str(user_name)
-        st.session_state["data_id"] = data_id
-        st.session_state.data_id = data_id
-        
+        st.session_state.update({                                       # Add data into session state
+            "start": True,
+            "data_id": data_id,
+            "user_id": user_name
+        })        
         st.button("Start Labeling")
 
     else:
