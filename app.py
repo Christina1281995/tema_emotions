@@ -198,7 +198,8 @@ else:
 
             # These are the parameters to submit when button hits submit (i.e. the parameters currently shown --> index -1)
             if st.session_state.question_number != 0:
-                prev_sentence = df["Sentence"][st.session_state.question_number - 1]
+                # prev_sentence = df["Sentence"][st.session_state.question_number - 1]
+                prev_sentence = df["Sentence"][st.session_state.question_number]
 
             # In the very first round (index = 0) use the current sentence
             else:
@@ -223,7 +224,7 @@ else:
                 # chose emotions
                 options = EMOTION_OPTIONS
                 emotion = st.radio(
-                    'Chose the most likely emotion:', 
+                    'Chose the dominant emotion:', 
                     options, 
                     # index=4, 
                     index=options.index((st.session_state.emotion, st.session_state.emotion)), 
@@ -236,7 +237,6 @@ else:
                 if st.form_submit_button("Submit"): 
                     emotion_to_add = emotion[0]
                     data = [[st.session_state.question_number, prev_sentence, emotion_to_add, irrelevance]]
-                    # print(data)
                     save_results(pd.DataFrame(data, columns=["q_num", "sentence", "emotion", "irrelevance"]))
                 
                     # Reset the form elements in session state
