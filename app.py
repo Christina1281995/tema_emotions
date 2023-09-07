@@ -166,10 +166,12 @@ else:                                                                  # If sess
                 # ----- expriment with target function ----
 
                 output = StTextAnnotator(text)
-                annotations = output["annotations"][0]
-                annotated_strings = [annotation["label"] for annotation in annotations]
-                target = ", ".join(annotated_strings)
-
+                if output:
+                    annotations = output["annotations"][0]
+                    annotated_strings = [annotation["label"] for annotation in annotations]
+                    target = ", ".join(annotated_strings)
+                else:
+                    target = ''
                 # ---- experiment over -----                
 
                 st.markdown(f"  ")
