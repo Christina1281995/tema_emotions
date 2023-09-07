@@ -238,7 +238,7 @@ else:
                     options, 
                     # index=4, 
                     # index=options.index((st.session_state.emotion, st.session_state.emotion)), 
-                    index = st.session_state.emotion,
+                    index = int(st.session_state.emotion),
                     format_func=lambda x: x[1])
 
                 st.markdown(f"  ")
