@@ -8,7 +8,7 @@ import streamlit as st
 import logging
 from st_text_annotator import StTextAnnotator # target annotation
 import json
-from datetime import date
+from datetime import datetime
 
 
 # Set up logging
@@ -296,17 +296,19 @@ else:                                                                  # If sess
                         st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
                         st.write(post[2])  # Display the post text
                         st.markdown("  ")  # Add a separator line
+                        st.markdown("---")  # Add a separator line
                         st.markdown("  ")  # Add a separator line
 
-                if st.button("Refresh Posts"):
-                    posts = get_discussion_data()
+                # if st.button("Refresh Posts"):
+                #     posts = get_discussion_data()
             
                 with st.form(key="posts"):                            # The actual form                          
+                    st.markdown("  ")  # Add a separator line
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
-                    today = date.today()
-                    date = today.strftime("%b-%d-%Y")
+                    now = datetime.now()
+                    date = now.strftime("%b-%d-%Y %H:%M")
                         
                     if st.form_submit_button("Post"):
                         post = [[post_text, date]]
