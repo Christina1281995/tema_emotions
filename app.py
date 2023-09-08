@@ -147,18 +147,15 @@ else:                                                                  # If sess
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
     if df is not None:                                                                  # If there is data
-        # st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
+        st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
 
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
-            
+        
             tab1, tab2  = st.tabs(["Annotation", "Guide"])
 
             with tab1:
                 
-                st.write("Progress bar:")
-                st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
-
                 st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
@@ -172,15 +169,12 @@ else:                                                                  # If sess
 
                 output = StTextAnnotator(text)
                 if output:
-                    # annotations = output[0][0]
-                    # annotated_strings = [annotation["label"] for annotation in annotations]
                     target = json.dumps(output)
                 else:
                     target = ''
 
-                st.write(output)
-
-                st.write(target) 
+                # st.write(output)
+                # st.write(target) 
 
 
                 with st.form(key="my_form"):                            # The actual form                          
@@ -207,8 +201,19 @@ else:                                                                  # If sess
                         st.experimental_rerun()
            
             with tab2:
-                st.write("testing")
+                st.heading("WHAT IS AN ASPECT TERM")
 
+                st.write("It's the target of an emotion. It pinpoints the particular part or attribute of a subject that emotions or sentiments are directed towards. " + 
+                         "In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, " +
+                         "in the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the "+
+                         "phone being praised. It could be a particular element, attribute, or component of a product, service, event, or any other subject under consideration.")
+                
+                st.heading("WHAT IS AN ASPECT BASED EMOTION")
+
+                st.write("It's the emotion associated with the aspect term. The aspect-based emotion refers to the emotions or sentiments associated with a "+
+                         "particular aspect or feature. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
+
+                st.image("images/emotions guide.png")
         else:
             st.markdown("End of data.")
             
