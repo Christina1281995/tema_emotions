@@ -295,7 +295,8 @@ else:                                                                  # If sess
                 posts = get_discussion_data()
                 if posts:
                     for post in posts:
-                        st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
+                        formatted_date = post[3].strftime("%b-%d-%Y %H:%M")  # Format the timestamp
+                        st.markdown(f"**{post[1]}** ({formatted_date})")  # Display author and date
                         st.write(post[2])  # Display the post text
                         # st.markdown("  ")  # Add a separator line
                         st.markdown("---")  # Add a separator line
@@ -303,7 +304,9 @@ else:                                                                  # If sess
 
                 if st.button("Refresh Posts"):
                     posts = get_discussion_data()
-            
+                
+                st.markdown("  ")  # Add space
+
                 with st.form(key="posts"):                            # The actual form                          
                     st.markdown("  ")  # Add a separator line
 
