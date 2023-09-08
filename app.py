@@ -8,6 +8,8 @@ import streamlit as st
 import logging
 from st_text_annotator import StTextAnnotator # target annotation
 import json
+from datetime import date
+
 
 # Set up logging
 # logging.basicConfig(level=logging.DEBUG)
@@ -98,6 +100,40 @@ def get_user_data(user_id):
     return result
 
 
+def save_discussion(data):
+    """Save results to the database."""
+
+    conn = connect_to_database()                    # Connect to db
+    if not conn:
+        return
+
+    cursor = conn.cursor()                          # Create cursor to execute queries
+
+    for row in data.to_dict(orient='records'):      # Insert the data into the table
+        insert_query = "INSERT INTO discussion (id, author, text, date) VALUES (DEFAULT, %s, %s, %s);"
+        values = (st.session_state.user_id, row['text'], row['date'])
+        cursor.execute(insert_query, values)
+
+    conn.commit()                                   # Commit the changes and close the connection
+    conn.close()
+
+
+def get_discussion_data():
+    """Retrieve user data from the database."""
+
+    conn = connect_to_database()                # Connect to the PostgreSQL database
+    if not conn:
+        return None
+
+    cursor = conn.cursor()                      # Create a cursor to execute queries
+    query = "SELECT * FROM discussion ORDER BY date DESC;"   # Query the database to get the user's data
+    cursor.execute(query)
+    result = cursor.fetchall()
+    conn.close()                                # Close the connection
+
+    return result
+
+
 def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
@@ -152,7 +188,7 @@ else:                                                                  # If sess
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
-            tab1, tab2  = st.tabs(["Annotation", "Guide"])
+            tab1, tab2, tab3  = st.tabs(["Annotation", "Guide", "Discussion Board"])
 
             with tab1:
                 
@@ -248,6 +284,23 @@ else:                                                                  # If sess
                              "of anxiety, worry, or apprehension. This category can encompass concerns about personal safety, health, future events, or any "+
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
                              "risk, expressing phobias, or discussing unsettling experiences.")
+
+            with tab3:
+                st.subheader("ANNOTATOR DISCUSSION BOARD")
+
+                posts = get_discussion_data()
+
+                st.write(posts)
+
+                post_text = st.text_input('Add a post:', 'Thoughts, comments, ideas, examples...')
+
+                today = date.today()
+                date = today.strftime("%b-%d-%Y")
+                    
+            if st.form_submit_button("Post"):
+                post = [[post_text, date]]
+                save_discussion(pd.DataFrame(post, columns=["text", "date"]))
+
 
         else:
             st.markdown("End of data.")
