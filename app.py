@@ -301,10 +301,10 @@ else:                                                                  # If sess
                 if st.button("Refresh Posts"):
                     posts = get_discussion_data()
                 st.markdown("  ")  # Add space
-
+                st.markdown("  ")  # Add a space
+                # st.markdown("  ")  # Add a space
+                
                 with st.form(key="posts"):                                                   
-                    st.markdown("  ")  # Add a space
-                    st.markdown("  ")  # Add a space
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
