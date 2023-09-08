@@ -12,6 +12,12 @@ from datetime import datetime
 import time
 import pytz
 
+st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+    </style>
+    """, unsafe_allow_html=True)
+
 
 # Set up logging
 # logging.basicConfig(level=logging.DEBUG)
@@ -210,7 +216,7 @@ else:                                                                  # If sess
 
             with tab1:              # annotations
                 
-                st.markdown(f'<span style="color: lightgrey; font-size: 14px">**Disaster**: {source} <br> **Tweet Nr**: {str(st.session_state.data_id)} <br> <br> </span>', unsafe_allow_html=True)
+                st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #D8DDE8; font-size: 14px">**Disaster**: {source} <br> **Tweet Nr**: {str(st.session_state.data_id)} <br> <br> </span>', unsafe_allow_html=True)
                 st.markdown(f"**Tweet**: <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
