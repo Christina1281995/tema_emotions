@@ -9,6 +9,7 @@ import logging
 from st_text_annotator import StTextAnnotator # target annotation
 import json
 from datetime import datetime
+import time
 
 
 # Set up logging
@@ -289,6 +290,7 @@ else:                                                                  # If sess
                 # st.subheader("ANNOTATOR DISCUSSION BOARD"
                 
                 st.markdown(" ")
+                refresh_rate = 30
 
                 posts = get_discussion_data()
                 if posts:
@@ -313,7 +315,10 @@ else:                                                                  # If sess
                     if st.form_submit_button("Post"):
                         post = [[post_text, date]]
                         save_discussion(pd.DataFrame(post, columns=["text", "date"]))
-                        posts = get_discussion_data()
+                
+                while True:
+                    time.sleep(refresh_rate)
+                    posts = get_discussion_data() 
 
         else:
             st.markdown("End of data.")
