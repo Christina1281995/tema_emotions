@@ -210,7 +210,7 @@ else:                                                                  # If sess
 
             with tab1:              # annotations
                 
-                st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
+                st.markdown(f"**Tweet Nr**: {str(st.session_state.data_id)} <br>  **Disaster**: {source}: <br> <br> **Tweet**: <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
                         st.image(link)
@@ -220,16 +220,6 @@ else:                                                                  # If sess
                         "irrelevance": False,
                         "emotion": "None"
                     })
-
-                # output = StTextAnnotator(text)
-
-                # if output:
-                #     target = json.dumps(output)
-                # else:
-                #     target = ''
-
-                # # st.write(output)
-                # st.write(target) 
 
 
                 with st.form(key="my_form"):                            # The actual form                          
