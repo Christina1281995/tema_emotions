@@ -233,10 +233,7 @@ else:                                                                  # If sess
                 
                     st.write(f"**Select the Target of the Emotion in the Text Below**") 
                     output = StTextAnnotator(text)
-                    if output:
-                        target = json.dumps(output)
-                    else:
-                        target = ''
+
                     # st.markdown("  ")
                     st.write("---")
                     st.markdown("  ")
@@ -254,6 +251,10 @@ else:                                                                  # If sess
                     st.markdown("  ")
                     
                     if st.form_submit_button("Submit", on_click=reset):
+                        if output:
+                            target = json.dumps(output)
+                        else:
+                            target = ''
                         data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
                         save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                         st.experimental_rerun()
