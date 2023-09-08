@@ -250,34 +250,34 @@ else:                                                                  # If sess
                         save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                         st.experimental_rerun()
 
-            with tab2:
-                st.write("Your Annotated Tweets")
+            # with tab2:
+            #     st.write("Your Annotated Tweets")
                 
-                if st.button("Refresh Annotations"):
-                    st.experimental_rerun() 
+            #     if st.button("Refresh Annotations"):
+            #         st.experimental_rerun() 
                 
-                user_annotations = get_user_data_all(st.session_state.user_id)
-                for annotation in user_annotations:
-                    st.markdown(f"**Text:** {annotation[4]}")  # Display the text of the annotation
-                    st.markdown(f"**Emotion:** {annotation[6]}")  # Display the emotion of the annotation
-                    st.markdown(f"**Target:** {annotation[7]}")  # Display the target of the annotation
+            #     user_annotations = get_user_data_all(st.session_state.user_id)
+            #     for annotation in user_annotations:
+            #         st.markdown(f"**Text:** {annotation[4]}")  # Display the text of the annotation
+            #         st.markdown(f"**Emotion:** {annotation[6]}")  # Display the emotion of the annotation
+            #         st.markdown(f"**Target:** {annotation[7]}")  # Display the target of the annotation
                     
-                    with st.expander("Edit Annotation"):  # Expandable section for editing
-                        # Display the annotation form pre-filled with existing data
-                        emotion = st.radio('Choose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((annotation[6], annotation[6])))
-                        target = StTextAnnotator(annotation[4])
-                        irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8], key=f"irrelevance_{annotation[0]}")
+            #         with st.expander("Edit Annotation"):  # Expandable section for editing
+            #             # Display the annotation form pre-filled with existing data
+            #             emotion = st.radio('Choose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((annotation[6], annotation[6])))
+            #             target = StTextAnnotator(annotation[4])
+            #             irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8], key=f"irrelevance_{annotation[0]}")
                         
-                        if st.button(f"Update Annotation {annotation[2]}"):  # Button to submit the updated annotation
-                            # Update the database with the new annotation data
-                            conn = connect_to_database()
-                            cursor = conn.cursor()
-                            update_query = "UPDATE results SET emotion = %s, target = %s, irrelevance = %s WHERE id = %s;"
-                            values = (emotion, json.dumps(target), irrelevance, annotation[0])
-                            cursor.execute(update_query, values)
-                            conn.commit()
-                            conn.close()
-                            st.success("Annotation updated!")
+            #             if st.button(f"Update Annotation {annotation[2]}"):  # Button to submit the updated annotation
+            #                 # Update the database with the new annotation data
+            #                 conn = connect_to_database()
+            #                 cursor = conn.cursor()
+            #                 update_query = "UPDATE results SET emotion = %s, target = %s, irrelevance = %s WHERE id = %s;"
+            #                 values = (emotion, json.dumps(target), irrelevance, annotation[0])
+            #                 cursor.execute(update_query, values)
+            #                 conn.commit()
+            #                 conn.close()
+            #                 st.success("Annotation updated!")
 
             with tab3:              # guide
                 st.write("**Aspect Terms**")
