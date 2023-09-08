@@ -101,6 +101,21 @@ def get_user_data(user_id):
 
     return result
 
+def get_user_data_all(user_id):
+    """Retrieve user data from the database."""
+
+    conn = connect_to_database()                # Connect to the PostgreSQL database
+    if not conn:
+        return None
+
+    cursor = conn.cursor()                      # Create a cursor to execute queries
+    query = "SELECT * FROM results WHERE author = %s ORDER BY data_id DESC;"   # Query the database to get the user's data
+    values = (user_id,)
+    cursor.execute(query, values)
+    result = cursor.fetchall()
+    conn.close()                                # Close the connection
+
+    return result
 
 def save_discussion(data):
     """Save results to the database."""
@@ -190,7 +205,7 @@ else:                                                                  # If sess
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
-            tab1, tab2, tab3  = st.tabs(["Annotation", "Guide", "Discussion Board"])
+            tab1, tab2, tab3, tab4  = st.tabs(["Annotation", "Your Annotated Tweets", "Guide", "Discussion Board"])
 
             with tab1:              # annotations
                 
@@ -234,15 +249,44 @@ else:                                                                  # If sess
                         data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
                         save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                         st.experimental_rerun()
-           
-            with tab2:              # guide
+
+            with tab2:
+                st.write("Your Annotated Tweets")
+                
+                if st.button("Refresh Annotations"):
+                    st.experimental_rerun() 
+                
+                user_annotations = get_user_data_all(st.session_state.user_id)
+                for annotation in user_annotations:
+                    st.markdown(f"**Text:** {annotation[4]}")  # Display the text of the annotation
+                    st.markdown(f"**Emotion:** {annotation[6]}")  # Display the emotion of the annotation
+                    st.markdown(f"**Target:** {annotation[7]}")  # Display the target of the annotation
+                    
+                    with st.expander("Edit Annotation"):  # Expandable section for editing
+                        # Display the annotation form pre-filled with existing data
+                        emotion = st.radio('Choose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((annotation[6], annotation[6])))
+                        target = StTextAnnotator(annotation[4], default_output=json.loads(annotation[7]))
+                        irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8])
+                        
+                        if st.button(f"Update Annotation {annotation[2]}"):  # Button to submit the updated annotation
+                            # Update the database with the new annotation data
+                            conn = connect_to_database()
+                            cursor = conn.cursor()
+                            update_query = "UPDATE results SET emotion = %s, target = %s, irrelevance = %s WHERE id = %s;"
+                            values = (emotion, json.dumps(target), irrelevance, annotation[0])
+                            cursor.execute(update_query, values)
+                            conn.commit()
+                            conn.close()
+                            st.success("Annotation updated!")
+
+            with tab3:              # guide
                 st.write("**Aspect Terms**")
                 st.write("It's the target of an emotion. It pinpoints the particular part or attribute of a subject that emotions or sentiments are directed towards. " + 
                          "In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, " +
                          "in the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the "+
                          "phone being praised. It could be a particular element, attribute, or component of a product, service, event, or any other subject under consideration.")
                 st.write(" ")
-                
+
                 st.write("**Aspect Based Emotions**")
                 st.write("It's the emotion associated with the aspect term. The aspect-based emotion refers to the emotions or sentiments associated with a "+
                          "particular aspect or feature. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
@@ -282,7 +326,7 @@ else:                                                                  # If sess
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
                              "risk, expressing phobias, or discussing unsettling experiences.")
 
-            with tab3:              # discussion board
+            with tab4:              # discussion board
                 
                 st.markdown(" ")
                 posts = get_discussion_data()
