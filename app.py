@@ -190,7 +190,7 @@ else:                                                                  # If sess
         
             tab1, tab2, tab3  = st.tabs(["Annotation", "Guide", "Discussion Board"])
 
-            with tab1:
+            with tab1:              # annotations
                 
                 st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
@@ -237,7 +237,7 @@ else:                                                                  # If sess
                         save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
                         st.experimental_rerun()
            
-            with tab2:
+            with tab2:              # guide
                 st.subheader("WHAT IS AN ASPECT TERM")
 
                 st.write("It's the target of an emotion. It pinpoints the particular part or attribute of a subject that emotions or sentiments are directed towards. " + 
@@ -285,21 +285,21 @@ else:                                                                  # If sess
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
                              "risk, expressing phobias, or discussing unsettling experiences.")
 
-            with tab3:
-                st.subheader("ANNOTATOR DISCUSSION BOARD")
+            with tab3:              # discussion board
+                # st.subheader("ANNOTATOR DISCUSSION BOARD")
+                with st.form(key="posts"):                            # The actual form                          
 
-                posts = get_discussion_data()
+                    posts = get_discussion_data()
+                    st.write(posts)
 
-                st.write(posts)
+                    post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
-                post_text = st.text_input('Add a post:', 'Thoughts, comments, ideas, examples...')
-
-                today = date.today()
-                date = today.strftime("%b-%d-%Y")
-                    
-            if st.form_submit_button("Post"):
-                post = [[post_text, date]]
-                save_discussion(pd.DataFrame(post, columns=["text", "date"]))
+                    today = date.today()
+                    date = today.strftime("%b-%d-%Y")
+                        
+                    if st.form_submit_button("Post"):
+                        post = [[post_text, date]]
+                        save_discussion(pd.DataFrame(post, columns=["text", "date"]))
 
 
         else:
