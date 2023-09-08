@@ -10,6 +10,7 @@ from st_text_annotator import StTextAnnotator # target annotation
 import json
 from datetime import datetime
 import time
+import pytz
 
 
 # Set up logging
@@ -312,7 +313,8 @@ else:                                                                  # If sess
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
-                    now = datetime.now()
+                    cet = pytz.timezone('CET')
+                    now = datetime.now(cet)
                     date = now.strftime("%b-%d-%Y %H:%M")
                         
                     if st.form_submit_button("Post"):
