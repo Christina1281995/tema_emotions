@@ -128,7 +128,7 @@ def get_discussion_data():
         return None
 
     cursor = conn.cursor()                      # Create a cursor to execute queries
-    query = "SELECT * FROM discussion ORDER BY date DESC;"   # Query the database to get the user's data
+    query = "SELECT * FROM discussion ORDER BY date ASC;"   # Query the database to get the user's data
     cursor.execute(query)
     result = cursor.fetchall()
     conn.close()                                # Close the connection
