@@ -164,13 +164,14 @@ else:                                                                  # If sess
 
             output = StTextAnnotator(text)
             if output:
-                annotations = output[0][0]
+                # annotations = output[0][0]
                 # annotated_strings = [annotation["label"] for annotation in annotations]
-                target = json.dumps(annotations)
+                target = json.dumps(output)
             else:
                 target = ''
 
             st.write(output)
+
             st.write(target) 
 
 
