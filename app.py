@@ -286,7 +286,21 @@ else:                                                                  # If sess
                              "risk, expressing phobias, or discussing unsettling experiences.")
 
             with tab3:              # discussion board
-                # st.subheader("ANNOTATOR DISCUSSION BOARD")
+                # st.subheader("ANNOTATOR DISCUSSION BOARD"
+                
+                st.markdown(" ")
+
+                posts = get_discussion_data()
+                if posts:
+                    for post in posts:
+                        st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
+                        st.write(post[2])  # Display the post text
+                        st.markdown("  ")  # Add a separator line
+                        st.markdown("  ")  # Add a separator line
+
+                if st.button("Refresh Posts"):
+                    posts = get_discussion_data()
+            
                 with st.form(key="posts"):                            # The actual form                          
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
@@ -298,21 +312,6 @@ else:                                                                  # If sess
                         post = [[post_text, date]]
                         save_discussion(pd.DataFrame(post, columns=["text", "date"]))
                         posts = get_discussion_data()
-
-                
-                st.markdown(" <br> <br> ")
-
-                posts = get_discussion_data()
-                if posts:
-                    for post in posts:
-                        st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
-                        st.write(post[2])  # Display the post text
-                        st.markdown("<br> <br> ")  # Add a separator line
-                
-                if st.button("Refresh Posts"):
-                    posts = get_discussion_data()
-            
-
 
         else:
             st.markdown("End of data.")
