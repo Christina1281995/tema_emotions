@@ -210,7 +210,8 @@ else:                                                                  # If sess
 
             with tab1:              # annotations
                 
-                st.markdown(f"**Tweet Nr**: {str(st.session_state.data_id)} <br>  **Disaster**: {source}: <br> <br> **Tweet**: <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
+                st.markdown(f'<span style="color: grey">**Disaster**: {source} <br> **Nr**: {str(st.session_state.data_id)} <br> <br> </span>', unsafe_allow_html=True)
+                st.markdown(f"**Tweet**: <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
                         st.image(link)
