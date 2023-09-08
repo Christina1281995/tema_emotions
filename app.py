@@ -217,7 +217,7 @@ else:                                                                  # If sess
             with tab1:              # annotations
                 
                 st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr {str(st.session_state.data_id)} - {source}  <br> <br> </span>', unsafe_allow_html=True)
-                st.markdown(f"**Tweet**: <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
+                st.markdown(f"<br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
                         st.image(link)
