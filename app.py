@@ -170,6 +170,7 @@ else:                                                                  # If sess
             else:
                 target = ''
 
+            st.write(output)
             st.write(target) 
 
 
