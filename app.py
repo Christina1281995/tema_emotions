@@ -233,7 +233,6 @@ else:                                                                  # If sess
                 
                     st.write(f"**Select the Target of the Emotion in the Text Below**") 
                     output = StTextAnnotator(text)
-
                     # st.markdown("  ")
                     st.write("---")
                     st.markdown("  ")
