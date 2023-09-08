@@ -217,11 +217,7 @@ else:                                                                  # If sess
 
 
                 with st.form(key="my_form"):                            # The actual form                          
-                    
-                    # ----- expriment with target function ----
-
-                    # ---- experiment over -----                
-
+                
                     st.markdown(f"  ")
                     st.markdown(f"  ")        
 
@@ -241,19 +237,18 @@ else:                                                                  # If sess
            
             with tab2:              # guide
                 st.write("**Aspect Terms**")
-
                 st.write("It's the target of an emotion. It pinpoints the particular part or attribute of a subject that emotions or sentiments are directed towards. " + 
                          "In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, " +
                          "in the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the "+
                          "phone being praised. It could be a particular element, attribute, or component of a product, service, event, or any other subject under consideration.")
+                st.write(" ")
                 
                 st.write("**Aspect Based Emotions**")
-
                 st.write("It's the emotion associated with the aspect term. The aspect-based emotion refers to the emotions or sentiments associated with a "+
                          "particular aspect or feature. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
-                
-                st.write("**Emotions Map**")
+                st.write(" ")
 
+                st.write("**Emotions Map**")
                 st.image("images/emotions guide.png")
 
                 with st.expander("Details on Happiness:"):
