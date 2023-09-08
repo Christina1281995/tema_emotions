@@ -147,7 +147,7 @@ else:                                                                  # If sess
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
     if df is not None:                                                                  # If there is data
-        st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
+        # st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
 
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
@@ -155,6 +155,10 @@ else:                                                                  # If sess
             tab1, tab2  = st.tabs(["Annotation", "Guide"])
 
             with tab1:
+                
+                st.write("Progress bar:")
+                st.progress(round((int(st.session_state.data_id) / len(df)) * 100))             # Show progress bar
+
                 st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
