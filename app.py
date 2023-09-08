@@ -151,52 +151,60 @@ else:                                                                  # If sess
 
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
-            st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
-            for link in str(photo_url).split(','):                                           # Show any images
-                if link != "nan":
-                    st.image(link)
+            
+            tab1, tab2  = st.tabs(["Annotation", "Guide"])
 
-            def reset():                                                                # Reset session elements for form
-                st.session_state.update({
-                    "irrelevance": False,
-                    "emotion": "None"
-                })
+            with tab1:
+                st.markdown(f"**{source}:** <br> <br> {text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
+                for link in str(photo_url).split(','):                                           # Show any images
+                    if link != "nan":
+                        st.image(link)
 
-            output = StTextAnnotator(text)
-            if output:
-                # annotations = output[0][0]
-                # annotated_strings = [annotation["label"] for annotation in annotations]
-                target = json.dumps(output)
-            else:
-                target = ''
+                def reset():                                                                # Reset session elements for form
+                    st.session_state.update({
+                        "irrelevance": False,
+                        "emotion": "None"
+                    })
 
-            st.write(output)
+                output = StTextAnnotator(text)
+                if output:
+                    # annotations = output[0][0]
+                    # annotated_strings = [annotation["label"] for annotation in annotations]
+                    target = json.dumps(output)
+                else:
+                    target = ''
 
-            st.write(target) 
+                st.write(output)
+
+                st.write(target) 
 
 
-            with st.form(key="my_form"):                            # The actual form                          
-                
-                # ----- expriment with target function ----
+                with st.form(key="my_form"):                            # The actual form                          
+                    
+                    # ----- expriment with target function ----
 
-                # ---- experiment over -----                
+                    # ---- experiment over -----                
 
-                st.markdown(f"  ")
-                st.markdown(f"  ")        
+                    st.markdown(f"  ")
+                    st.markdown(f"  ")        
 
-                emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
-                
-                st.markdown(f"  ")
-                
-                irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
-                
-                st.markdown(f"  ")
-                st.markdown(f"  ")
-                
-                if st.form_submit_button("Submit", on_click=reset):
-                    data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
-                    save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
-                    st.experimental_rerun()
+                    emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
+                    
+                    st.markdown(f"  ")
+                    
+                    irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
+                    
+                    st.markdown(f"  ")
+                    st.markdown(f"  ")
+                    
+                    if st.form_submit_button("Submit", on_click=reset):
+                        data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
+                        save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
+                        st.experimental_rerun()
+           
+            with tab2:
+                st.write("testing")
 
         else:
             st.markdown("End of data.")
+            
