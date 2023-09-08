@@ -297,12 +297,12 @@ else:                                                                  # If sess
                     for post in posts:
                         st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
                         st.write(post[2])  # Display the post text
-                        st.markdown("  ")  # Add a separator line
+                        # st.markdown("  ")  # Add a separator line
                         st.markdown("---")  # Add a separator line
                         st.markdown("  ")  # Add a separator line
 
-                # if st.button("Refresh Posts"):
-                #     posts = get_discussion_data()
+                if st.button("Refresh Posts"):
+                    posts = get_discussion_data()
             
                 with st.form(key="posts"):                            # The actual form                          
                     st.markdown("  ")  # Add a separator line
@@ -316,9 +316,9 @@ else:                                                                  # If sess
                         post = [[post_text, date]]
                         save_discussion(pd.DataFrame(post, columns=["text", "date"]))
                 
-                while True:
-                    time.sleep(refresh_rate)
-                    posts = get_discussion_data() 
+                # while True:
+                #     time.sleep(refresh_rate)
+                #     posts = get_discussion_data() 
 
         else:
             st.markdown("End of data.")
