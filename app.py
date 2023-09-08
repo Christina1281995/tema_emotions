@@ -266,7 +266,7 @@ else:                                                                  # If sess
                         # Display the annotation form pre-filled with existing data
                         emotion = st.radio('Choose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((annotation[6], annotation[6])))
                         target = StTextAnnotator(annotation[4])
-                        irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8])
+                        irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8], key=f"irrelevance_{annotation[0]}")
                         
                         if st.button(f"Update Annotation {annotation[2]}"):  # Button to submit the updated annotation
                             # Update the database with the new annotation data
