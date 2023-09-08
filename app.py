@@ -221,30 +221,40 @@ else:                                                                  # If sess
                         "emotion": "None"
                     })
 
-                output = StTextAnnotator(text)
+                # output = StTextAnnotator(text)
 
-                if output:
-                    target = json.dumps(output)
-                else:
-                    target = ''
+                # if output:
+                #     target = json.dumps(output)
+                # else:
+                #     target = ''
 
-                # st.write(output)
-                st.write(target) 
+                # # st.write(output)
+                # st.write(target) 
 
 
                 with st.form(key="my_form"):                            # The actual form                          
                 
-                    st.markdown(f"  ")
-                    st.markdown(f"  ")        
+                    st.write(f"**Select the Target of the Emotion**") 
+                    output = StTextAnnotator(text)
+                    if output:
+                        target = json.dumps(output)
+                    else:
+                        target = ''
+                    st.markdown("  ")
+                    st.write("---")
+                    st.markdown("  ")
 
-                    emotion = st.radio('Chose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
+                    st.write(f"**Chose the Most Dominant Emotion**") 
+                    emotion = st.radio(' ', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1])
+                    st.markdown("  ")
+                    st.write("---")
+                    st.markdown("  ")
                     
-                    st.markdown(f"  ")
-                    
+                    st.write(f"**Mark Tweet as Non-Disaster-Related**") 
                     irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
-                    
-                    st.markdown(f"  ")
-                    st.markdown(f"  ")
+                    st.markdown("  ")
+                    st.write("---")
+                    st.markdown("  ")
                     
                     if st.form_submit_button("Submit", on_click=reset):
                         data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
