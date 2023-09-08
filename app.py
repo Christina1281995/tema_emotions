@@ -288,28 +288,23 @@ else:                                                                  # If sess
                              "risk, expressing phobias, or discussing unsettling experiences.")
 
             with tab3:              # discussion board
-                # st.subheader("ANNOTATOR DISCUSSION BOARD"
                 
                 st.markdown(" ")
-                refresh_rate = 30
-
                 posts = get_discussion_data()
                 if posts:
                     for post in posts:
-                        formatted_date = post[3].strftime("%b-%d-%Y %H:%M")  # Format the timestamp
-                        st.markdown(f"**{post[1]}** ({formatted_date})")  # Display author and date
-                        st.write(post[2])  # Display the post text
-                        # st.markdown("  ")  # Add a separator line
-                        st.markdown("---")  # Add a separator line
-                        st.markdown("  ")  # Add a separator line
+                        formatted_date = post[3].strftime("%b-%d-%Y %H:%M")         # Format the timestamp
+                        st.markdown(f"**{post[1]}** ({formatted_date})")            # Display author and date
+                        st.write(post[2])                                           # Display the post text
+                        st.markdown("---")                                          # Add a separator line
 
                 if st.button("Refresh Posts"):
                     posts = get_discussion_data()
-                
                 st.markdown("  ")  # Add space
 
-                with st.form(key="posts"):                            # The actual form                          
-                    st.markdown("  ")  # Add a separator line
+                with st.form(key="posts"):                                                   
+                    st.markdown("  ")  # Add a space
+                    st.markdown("  ")  # Add a space
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
@@ -320,10 +315,7 @@ else:                                                                  # If sess
                     if st.form_submit_button("Post"):
                         post = [[post_text, date]]
                         save_discussion(pd.DataFrame(post, columns=["text", "date"]))
-                
-                # while True:
-                #     time.sleep(refresh_rate)
-                #     posts = get_discussion_data() 
+
 
         else:
             st.markdown("End of data.")
