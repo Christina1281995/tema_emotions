@@ -287,10 +287,18 @@ else:                                                                  # If sess
 
             with tab3:              # discussion board
                 # st.subheader("ANNOTATOR DISCUSSION BOARD")
-                with st.form(key="posts"):                            # The actual form                          
 
+                posts = get_discussion_data()
+                if posts:
+                    for post in posts:
+                        st.markdown(f"**{post[1]}** ({post[3]})")  # Display author and date
+                        st.write(post[2])  # Display the post text
+                        st.markdown("---")  # Add a separator line
+                
+                if st.button("Refresh Posts"):
                     posts = get_discussion_data()
-                    st.write(posts)
+                
+                with st.form(key="posts"):                            # The actual form                          
 
                     post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
