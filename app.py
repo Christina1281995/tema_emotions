@@ -362,8 +362,6 @@ else:                                                                  # If sess
             with tab3:              # guide
                 
                 with st.expander("What is an Aspect Term?"):
-
-                    st.write("**Aspect Terms**")
                     st.write("An aspect term is the :red[target of an emotion]. It pinpoints the subject that emotions or sentiments are directed towards." +
                              " In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, in " +
                              "the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the phone being praised.")
@@ -372,42 +370,40 @@ else:                                                                  # If sess
 
 
                 with st.expander("What is the Aspect-Based Emotion?"):
-                    st.write("**Aspect Based Emotions**")
-                    st.write("The aspect-based emotion is the emotion associated with the aspect term. The aspect-based emotion refers to the emotions"+
+                    st.write("The aspect-based emotion is the :red[emotion associated with the aspect term]. The aspect-based emotion refers to the emotions"+
                              "or sentiments associated with a particular aspect. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
 
                 with st.expander("Emotions Map"):
-                    st.write("**Emotions Map**")
                     st.image("images/emotions guide.png")
 
-                with st.expander("Details on Happiness:"):
+                with st.expander("Happiness In Detail"):
                     st.write("Happiness is a positive emotion characterized by feelings of joy, contentment, and satisfaction. "+
                              "Tweets expressing happiness may indicate a sense of pleasure, excitement, or delight. Examples of tweets "+
                              "expressing happiness could include positive experiences, achievements, celebrations, or expressions of gratitude.")
-                    st.image("images/happy1.png")  
-                    st.image("images/happy2.png")
-                    st.image("images/happy3.png")      
-                    st.image("images/happy4.png")
+                    # st.image("images/happy1.png")  
+                    # st.image("images/happy2.png")
+                    # st.image("images/happy3.png")      
+                    # st.image("images/happy4.png")
 
-                with st.expander("Details on Anger:"):
+                with st.expander("Anger In Detail"):
                     st.write("Anger is a negative emotion associated with feelings of displeasure, irritation, or frustration. Tweets expressing "+
                              "anger may include instances of perceived injustice, provocation, or annoyance. Anger can be directed towards individuals, "+
                              "events, organizations, or societal issues. Examples of angry tweets might involve expressing outrage, criticism, or venting frustration.")
-                    st.image("images/anger1.png")  
-                    st.image("images/anger2.png")
-                    st.image("images/anger3.png")      
+                    # st.image("images/anger1.png")  
+                    # st.image("images/anger2.png")
+                    # st.image("images/anger3.png")      
 
-                with st.expander("Details on Sadness:"):
+                with st.expander("Sadness In Detail"):
                     st.write("Sadness is a negative emotion characterized by feelings of unhappiness, sorrow, or grief. Tweets expressing sadness may reflect "+
                              "emotions related to loss, disappointment, or melancholy. This category includes tweets that convey expressions of sadness, "+
                              "loneliness, heartbreak, or other forms of emotional distress. Examples of sad tweets could involve sharing personal setbacks, "+
                              "expressing empathy for others, or discussing emotional hardships.")
-                    st.image("images/sad1.png")  
-                    st.image("images/sad2.png")
+                    # st.image("images/sad1.png")  
+                    # st.image("images/sad2.png")
 
-                with st.expander("Details on Fear:"):
+                with st.expander("Fear In Detail"):
                     st.write("Fear is an emotion typically triggered by perceived threats, danger, or uncertainty. Tweets expressing fear may reflect feelings "+
                              "of anxiety, worry, or apprehension. This category can encompass concerns about personal safety, health, future events, or any "+
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
