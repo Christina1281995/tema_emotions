@@ -275,7 +275,12 @@ else:                                                                  # If sess
                         st.write(f"**Emotion and Target #1:**") 
                         output_one = StTextAnnotator(text + " <!-- 1 -->")
 
-                        emotion_one = st.radio('Emotion associated with the target:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden", key="emotion_one_radio")
+                        emotion_one = st.radio('Emotion associated with the target:', 
+                                               EMOTION_OPTIONS, 
+                                               index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
+                                               format_func=lambda x: x[1], 
+                                               label_visibility="hidden", 
+                                               key="emotion_one_radio")
                     
                     st.write("---")
                     st.markdown("  ")
@@ -285,8 +290,14 @@ else:                                                                  # If sess
                         st.write(f"**Emotion and Target #2:**") 
                         output_two = StTextAnnotator(text + " <!-- 2 -->")
 
-                        emotion_two = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden", key="emotion_two_radio")
-                    
+                        # emotion_two = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden", key="emotion_two_radio")
+                        emotion_two = st.radio('Emotion associated with the target', 
+                                               EMOTION_OPTIONS, 
+                                               index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
+                                               format_func=lambda x: x[1], 
+                                               label_visibility="hidden", 
+                                               key="emotion_two_radio")
+
                     st.write("---")
                     st.markdown("  ")
 
@@ -295,7 +306,12 @@ else:                                                                  # If sess
                         st.write(f"**Emotion and Target #3:**") 
                         output_three = StTextAnnotator(text + " <!-- 3 -->")
 
-                        emotion_three = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden", key="emotion_three_radio")
+                        emotion_three = st.radio('Emotion associated with the target', 
+                                                 EMOTION_OPTIONS, 
+                                                 index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
+                                                 format_func=lambda x: x[1], 
+                                                 label_visibility="hidden", 
+                                                 key="emotion_three_radio")
                     
                     st.write("---")
                     st.markdown("  ")
