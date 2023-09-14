@@ -15,8 +15,18 @@ import pytz
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+        
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: white;  # This ensures the text behind doesn't show through when scrolling
+            padding: 10px;  # Optional padding
+            border-bottom: 1px solid #ccc;  # Optional border for visual separation
+        }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+
 
 
 # Set up logging
@@ -107,6 +117,7 @@ def get_user_data(user_id):
 
     return result
 
+
 def get_user_data_all(user_id):
     """Retrieve user data from the database."""
 
@@ -122,6 +133,7 @@ def get_user_data_all(user_id):
     conn.close()                                # Close the connection
 
     return result
+
 
 def save_discussion(data):
     """Save results to the database."""
@@ -200,8 +212,8 @@ if not st.session_state["start"]:                                       # If ses
     else:
         st.write('Username not found')
 
+# Load Data
 else:                                                                  # If session_state["start"] == True
-    # Load Data
     path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
@@ -217,6 +229,10 @@ else:                                                                  # If sess
             with tab1:              # annotations
                 
                 st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr {str(st.session_state.data_id)} - {source}  <br> <br> </span>', unsafe_allow_html=True)
+                
+                with st.container():
+                    st.markdown(f'<div class="sticky-container">{text}</div>', unsafe_allow_html=True)
+
                 st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
