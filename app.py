@@ -15,14 +15,10 @@ import pytz
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
-        
-        .sticky-slot {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: white;  # This ensures the text behind doesn't show through when scrolling
-            padding: 10px;  # Optional padding
-            border-bottom: 1px solid #ccc;  # Optional border for visual separation
+
+        .sidebar .markdown-text-container {
+            word-wrap: break-word;
+            white-space: pre-line;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -228,7 +224,7 @@ else:                                                                  # If sess
 
             with tab1:              # annotations
 
-                st.sidebar.text(text)
+                st.sidebar.markdown(text)
                 
                 st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr {str(st.session_state.data_id)} - {source}  <br> <br> </span>', unsafe_allow_html=True)
 
