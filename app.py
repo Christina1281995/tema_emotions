@@ -298,7 +298,7 @@ else:                                                                  # If sess
 
 
 
-                    st.subheader(f"**Mark Tweet as Non-Disaster-Related**") 
+                    st.subheader(f"**Not Disaster-Related**") 
                     irrelevance = st.checkbox('Tick box if this tweet is **:red[not]** disaster related', 
                                               value=st.session_state.irrelevance, 
                                               key=f"relevance + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
