@@ -20,6 +20,10 @@ st.markdown("""
             word-wrap: break-word;
             white-space: pre-line;
         }
+            
+        .sidebar .block-container {
+            width: 33%;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -225,21 +229,28 @@ else:                                                                  # If sess
             with tab1:              # annotations
 
                 # Define the content to be displayed in the sidebar
-                content = f"""
+
+                st.sidebar.header('Tweet')
+                
+                st.sidebar.markdown(f"""
                 <span style="font-family: 'IBM Plex Sans', sans-serif; color: #CCD3DA; font-size: 14px">
                     Tweet Nr {str(st.session_state.data_id)} - {source}
                 </span>
                 <br><br>
                 {text}
-                """
+                """, unsafe_allow_html=True)
+                
+                for link in str(photo_url).split(','):
+                    if link != "nan":
+                        st.sidebar.image(link)
+
+
+                # st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
 
                 # Display the content in the sidebar
-                st.sidebar.markdown(content, unsafe_allow_html=True)
+                # st.sidebar.markdown(content, unsafe_allow_html=True)
                 
-                # st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
-                for link in str(photo_url).split(','):                                           # Show any images
-                    if link != "nan":
-                        st.image(link)
+
 
                 def reset():                                                                # Reset session elements for form
                     st.session_state.update({
