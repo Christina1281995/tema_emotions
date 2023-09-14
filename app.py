@@ -269,7 +269,7 @@ else:                                                                  # If sess
                 
                     with st.container():
                         st.write(f"**Emotion and Target #1:**") 
-                        output_one = StTextAnnotator(text, key="annotator_1")
+                        output_one = StTextAnnotator(text)
 
                         emotion_one = st.radio('Emotion associated with the target:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                         # st.write("---")
@@ -278,7 +278,7 @@ else:                                                                  # If sess
 
                     with st.container():
                         st.write(f"**Emotion and Target #2:**") 
-                        output_two = StTextAnnotator(text, key="annotator_2")
+                        output_two = StTextAnnotator(text)
 
                         emotion_two = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                         # st.write("---")
@@ -287,7 +287,7 @@ else:                                                                  # If sess
 
                     with st.container():
                         st.write(f"**Emotion and Target #3:**") 
-                        output_three = StTextAnnotator(text, key="annotator_3")
+                        output_three = StTextAnnotator(text)
 
                         emotion_three = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                         # st.write("---")
