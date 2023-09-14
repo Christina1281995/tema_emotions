@@ -198,7 +198,7 @@ if "start" not in st.session_state:
 if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
 if "emotion" not in st.session_state:
-    st.session_state.emotion = 'None'
+    st.session_state.emotion = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
 
 user_ids = [i["name"] for i in config["users"]]
 
