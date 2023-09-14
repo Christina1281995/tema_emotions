@@ -267,33 +267,33 @@ else:                                                                  # If sess
 
                 with st.form(key="my_form"):                            # The actual form                          
                 
-                    st.write(f"**Emotion Target #1:**") 
-                    output_one = StTextAnnotator(text)
+                    st.write(f"**Emotion and Target #1:**") 
+                    output_one = StTextAnnotator(text, key="annotator_1")
                     # st.write("---")
                     # st.markdown("  ")
 
-                    st.write(f"**Emotion #1:**") 
-                    emotion_one = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
+                    # st.write(f"**Emotion #1:**") 
+                    emotion_one = st.radio('Emotion associated with the target:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                     st.write("---")
                     st.markdown("  ")
 
-                    st.write(f"**Emotion Target #2:**") 
-                    output_two = StTextAnnotator(text)
+                    st.write(f"**Emotion and Target #2:**") 
+                    output_two = StTextAnnotator(text, key="annotator_2")
                     # st.write("---")
                     # st.markdown("  ")
 
-                    st.write(f"**Emotion #2:**") 
-                    emotion_two = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
+                    # st.write(f"**Emotion #2:**") 
+                    emotion_two = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                     st.write("---")
                     st.markdown("  ")
 
-                    st.write(f"**Emotion Target #3:**") 
-                    output_three = StTextAnnotator(text)
+                    st.write(f"**Emotion and Target #3:**") 
+                    output_three = StTextAnnotator(text, key="annotator_3")
                     # st.write("---")
                     # st.markdown("  ")
 
-                    st.write(f"**Emotion #3:**") 
-                    emotion_three = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
+                    # st.write(f"**Emotion #3:**") 
+                    emotion_three = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="visible")
                     st.write("---")
                     st.markdown("  ")
                     
