@@ -251,7 +251,7 @@ else:                                                                  # If sess
                                     
                     with st.container():
                         st.subheader(f"Emotion and Target #1") 
-                        output_one = StTextAnnotator(text)  # + " <!-- 1 -->")
+                        output_one = StTextAnnotator(text + "\u200B")  # + " <!-- 1 -->")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
@@ -264,7 +264,7 @@ else:                                                                  # If sess
 
                     with st.container():
                         st.subheader(f"Emotion and Target #2") 
-                        output_two = StTextAnnotator(text)   # + " <!-- 2 -->")
+                        output_two = StTextAnnotator(text + "\u200B\u200B")   # + " <!-- 2 -->")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
@@ -277,7 +277,7 @@ else:                                                                  # If sess
 
                     with st.container():
                         st.subheader(f"Emotion and Target #3") 
-                        output_three = StTextAnnotator(text)   #  + " <!-- 3 -->")
+                        output_three = StTextAnnotator(text + "\u200B\u200B\u200B")   #  + " <!-- 3 -->")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
                                                  index=int(st.session_state.emotion),
