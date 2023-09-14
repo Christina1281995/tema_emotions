@@ -256,15 +256,13 @@ else:                                                                  # If sess
 
 
                 with st.form(key="my_form"):                            # The actual form                          
-                
-                    st.write(f"Emotion index: {st.session_state.emotion}")                    
-                    
+                                    
                     with st.container():
-                        st.header(f"**Emotion and Target #1**") 
+                        st.header(f"Emotion and Target #1") 
                         output_one = StTextAnnotator(text + " <!-- 1 -->")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
-                                               index=4,
+                                               index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
                                                key=f"emotion_one_radio + {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
@@ -273,7 +271,7 @@ else:                                                                  # If sess
 
 
                     with st.container():
-                        st.header(f"**Emotion and Target #2**") 
+                        st.header1(f"Emotion and Target #2") 
                         output_two = StTextAnnotator(text + " <!-- 2 -->")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
@@ -286,7 +284,7 @@ else:                                                                  # If sess
 
 
                     with st.container():
-                        st.header(f"**Emotion and Target #3**") 
+                        st.header3(f"Emotion and Target #3") 
                         output_three = StTextAnnotator(text + " <!-- 3 -->")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
