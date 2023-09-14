@@ -230,10 +230,10 @@ else:                                                                  # If sess
 
                 # Define the content to be displayed in the sidebar
 
-                st.sidebar.header('Tweet')
+                st.sidebar.header('Current Tweet')
                 
                 st.sidebar.markdown(f"""
-                <span style="font-family: 'IBM Plex Sans', sans-serif; color: #CCD3DA; font-size: 14px">
+                <span style="font-family: 'IBM Plex Sans', sans-serif; color: #bdc3c9; font-size: 14px">
                     Tweet Nr {str(st.session_state.data_id)} - {source}
                 </span>
                 <br><br>
