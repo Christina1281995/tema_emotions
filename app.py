@@ -179,7 +179,6 @@ def extract_emotion_labels(emotion_data):
 
 def reset_form():
     st.session_state.emotion = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
-
     st.session_state.irrelevance = False
     st.session_state.urgency = False
 
@@ -275,8 +274,8 @@ else:                                                                  # If sess
                     # Debugging
                     st.write(f"Debug Value: {st.session_state.emotion}")
                     st.write(f"Debug Type: {type(st.session_state.emotion)}")
-                    emotion_index = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
-                    st.write(f"Emotion index: {emotion_index}")                    
+                    # emotion_index = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
+                    st.write(f"Emotion index: {st.session_state.emotion}")                    
                     
                     with st.container():
                         st.write(f"**Emotion and Target #1:**") 
@@ -285,7 +284,7 @@ else:                                                                  # If sess
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                             #    index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
-                                               index=emotion_index,
+                                               index=st.session_state.emotion,
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
                                                key="emotion_one_radio")
