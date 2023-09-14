@@ -378,7 +378,7 @@ else:                                                                  # If sess
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
 
-                with st.expander("Emotions Map")
+                with st.expander("Emotions Map"):
                     st.write("**Emotions Map**")
                     st.image("images/emotions guide.png")
 
