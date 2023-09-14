@@ -360,20 +360,27 @@ else:                                                                  # If sess
             #                 st.success("Annotation updated!")
 
             with tab3:              # guide
-                st.write("**Aspect Terms**")
-                st.write("It's the target of an emotion. It pinpoints the particular part or attribute of a subject that emotions or sentiments are directed towards. " + 
-                         "In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, " +
-                         "in the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the "+
-                         "phone being praised. It could be a particular element, attribute, or component of a product, service, event, or any other subject under consideration.")
-                st.write(" ")
+                
+                with st.expander("What is an Aspect Term?"):
 
-                st.write("**Aspect Based Emotions**")
-                st.write("It's the emotion associated with the aspect term. The aspect-based emotion refers to the emotions or sentiments associated with a "+
-                         "particular aspect or feature. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
-                st.write(" ")
+                    st.write("**Aspect Terms**")
+                    st.write("An aspect term is the :red[target of an emotion]. It pinpoints the subject that emotions or sentiments are directed towards." +
+                             " In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, in " +
+                             "the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the phone being praised.")
+                    st.write(" ")
+                    st.image("images/aspect based explanation.png")
 
-                st.write("**Emotions Map**")
-                st.image("images/emotions guide.png")
+
+                with st.expander("What is the Aspect-Based Emotion?"):
+                    st.write("**Aspect Based Emotions**")
+                    st.write("The aspect-based emotion is the emotion associated with the aspect term. The aspect-based emotion refers to the emotions"+
+                             "or sentiments associated with a particular aspect. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
+                    st.write(" ")
+                    st.image("images/aspect based explanation.png")
+
+                with st.expander("Emotions Map")
+                    st.write("**Emotions Map**")
+                    st.image("images/emotions guide.png")
 
                 with st.expander("Details on Happiness:"):
                     st.write("Happiness is a positive emotion characterized by feelings of joy, contentment, and satisfaction. "+
