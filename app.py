@@ -43,8 +43,13 @@ CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
     message_id BIGINT, 
     text text COLLATE pg_catalog."default",
     source text COLLATE pg_catalog."default",
-    emotion text COLLATE pg_catalog."default",
-    target text COLLATE pg_catalog."default",
+    target_one text COLLATE pg_catalog."default",
+    emotion_one text COLLATE pg_catalog."default",
+    target_two text COLLATE pg_catalog."default",
+    emotion_two text COLLATE pg_catalog."default",
+    target_three text COLLATE pg_catalog."default",
+    emotion_three text COLLATE pg_catalog."default",
+    urgency boolean,
     irrelevance boolean
 );'''
 
@@ -92,8 +97,8 @@ def save_results(data):
     cursor.execute(CREATE_TABLE_QUERY)              # Create a new table if it doesn't exist
 
     for row in data.to_dict(orient='records'):      # Insert the data into the table
-        insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, emotion, target, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s);"
-        values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['emotion'], row['target'], row['irrelevance'])
+        insert_query = "INSERT INTO results (id, author, data_id, message_id, text, source, target_one, emotion_one, target_two, emotion_two, target_three, emotion_three, urgency, irrelevance) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['target_one'], row['emotion_one'], row['target_two'], row['emotion_two'], row['target_three'], row['emotion_three'], row['urgency'], row['irrelevance'])
         cursor.execute(insert_query, values)
 
     st.session_state["data_id"] += 1                # Increment the question number for the next row
@@ -262,32 +267,68 @@ else:                                                                  # If sess
 
                 with st.form(key="my_form"):                            # The actual form                          
                 
-                    st.write(f"**Select the Target of the Emotion in the Text Below**") 
-                    output = StTextAnnotator(text)
+                    st.write(f"**Emotion Target #1:**") 
+                    output_one = StTextAnnotator(text)
+                    # st.write("---")
                     # st.markdown("  ")
+
+                    st.write(f"**Emotion #1:**") 
+                    emotion_one = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
                     st.write("---")
                     st.markdown("  ")
 
-                    st.write(f"**Chose the Most Dominant Emotion**") 
-                    emotion = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
+                    st.write(f"**Emotion Target #2:**") 
+                    output_two = StTextAnnotator(text)
+                    # st.write("---")
                     # st.markdown("  ")
+
+                    st.write(f"**Emotion #2:**") 
+                    emotion_two = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
+                    st.write("---")
+                    st.markdown("  ")
+
+                    st.write(f"**Emotion Target #3:**") 
+                    output_three = StTextAnnotator(text)
+                    # st.write("---")
+                    # st.markdown("  ")
+
+                    st.write(f"**Emotion #3:**") 
+                    emotion_three = st.radio('Chose the most dominant emotion', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden")
                     st.write("---")
                     st.markdown("  ")
                     
+                    st.write(f"**Urgency**") 
+                    urgency = st.checkbox('Tick box if this tweet IS urgent', value=st.session_state.irrelevance)
+                    st.write("---")
+                    st.markdown("  ")
+
                     st.write(f"**Mark Tweet as Non-Disaster-Related**") 
                     irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
-                    # st.markdown("  ")
                     st.write("---")
                     st.markdown("  ")
                     
                     if st.form_submit_button("Submit", on_click=reset):
-                        if output:
-                            target = json.dumps(output)
+                        if output_one:
+                            target_one = json.dumps(output_one)
                         else:
-                            target = ''
-                        data = [[st.session_state.data_id, message_id, text, source, emotion[0], target, irrelevance]]
-                        save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "emotion", "target", "irrelevance"]))
+                            target_one = ''
+                        if output_two:
+                            target_two = json.dumps(output_two)
+                        else:
+                            target_two = ''
+                        if output_three:
+                            target_three = json.dumps(output_three)
+                        else:
+                            target_three = ''
+                        data = [[st.session_state.data_id, message_id, text, source, target_one, emotion_one[0], target_two, emotion_two[0], target_three, emotion_three[0], urgency, irrelevance]]
+                        save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "target_one", "emotion_one", "target_two", "emotion_two", "target_three", "emotion_three", "urgency", "irrelevance"]))
                         st.experimental_rerun()
+
+
+
+        # values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['target_one'], row['emotion_one'], row['target_two'], row['emotion_two'], row['target_three'], row['emotion_three'], row['urgency'], row['irrelevance'])
+
+
 
             # with tab2:
             #     st.write("Your Annotated Tweets")
