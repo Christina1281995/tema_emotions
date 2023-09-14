@@ -250,7 +250,7 @@ else:                                                                  # If sess
                 with st.form(key="my_form"):                            # The actual form                          
                                     
                     with st.container():
-                        st.subheader(f"Emotion and Target Pir #1") 
+                        st.subheader(f"Emotion and Target #1") 
                         output_one = StTextAnnotator(text + "\u200B")  # + " <!-- 1 -->")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
