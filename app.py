@@ -178,7 +178,7 @@ def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
 def reset_form():
-    st.session_state.emotion = ('None', 'None')
+    st.session_state.emotion = 'None'
     st.session_state.irrelevance = False
     st.session_state.urgency = False
 
@@ -198,7 +198,7 @@ if "start" not in st.session_state:
 if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
 if "emotion" not in st.session_state:
-    st.session_state.emotion = ('None', 'None')
+    st.session_state.emotion = 'None'
 
 user_ids = [i["name"] for i in config["users"]]
 
