@@ -284,7 +284,7 @@ else:                                                                  # If sess
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                             #    index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
-                                               index=st.session_state.emotion,
+                                               index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
                                                key="emotion_one_radio")
@@ -302,7 +302,7 @@ else:                                                                  # If sess
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
                                             #    index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
-                                               index=st.session_state.emotion,
+                                               index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
                                                key="emotion_two_radio")
@@ -318,7 +318,7 @@ else:                                                                  # If sess
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
                                                 #  index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
-                                                 index=st.session_state.emotion,
+                                                 index=int(st.session_state.emotion),
                                                  format_func=lambda x: x[1], 
                                                  label_visibility="hidden", 
                                                  key="emotion_three_radio")
