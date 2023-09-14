@@ -238,7 +238,7 @@ else:                                                                  # If sess
                 </span>
                 <br><br>
                 {text}
-                <br>
+                <br><br>
                 """, unsafe_allow_html=True)
                 
                 for link in str(photo_url).split(','):
