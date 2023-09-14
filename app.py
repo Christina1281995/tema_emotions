@@ -227,11 +227,10 @@ else:                                                                  # If sess
             tab1, tab3, tab4 = st.tabs(["Annotation", "Guide", "Discussion Board"])
 
             with tab1:              # annotations
+
+                st.sidebar.text(text)
                 
                 st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr {str(st.session_state.data_id)} - {source}  <br> <br> </span>', unsafe_allow_html=True)
-                
-                tweet_slot = st.empty()
-                tweet_slot.markdown(f'<div class="sticky-slot">{text}</div>', unsafe_allow_html=True)
 
                 st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
