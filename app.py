@@ -275,7 +275,12 @@ else:                                                                  # If sess
                         st.write(f"**Emotion and Target #1:**") 
                         output_one = StTextAnnotator(text + " <!-- 1 -->")
                         
-                        st.write(f"Debug: {st.session_state.emotion}")
+                        # Debugging
+                        st.write(f"Debug Value: {st.session_state.emotion}")
+                        st.write(f"Debug Type: {type(st.session_state.emotion)}")
+
+                        if st.session_state.emotion is None:
+                            st.session_state.emotion = 'None'
 
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
