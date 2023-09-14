@@ -305,7 +305,7 @@ else:                                                                  # If sess
                     st.write("---")
                     st.markdown("  ")
                     
-                    if st.form_submit_button("Submit"):
+                    if st.form_submit_button("Next"):
                         if output_one:
                             target_one = json.dumps(output_one)
                         else:
