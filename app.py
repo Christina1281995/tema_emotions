@@ -250,7 +250,7 @@ else:                                                                  # If sess
                 with st.form(key="my_form"):                            # The actual form                          
                                     
                     with st.container():
-                        st.subheader(f"Emotion and Target #1") 
+                        st.subheader(f"Emotion and Target Pir #1") 
                         output_one = StTextAnnotator(text + "\u200B")  # + " <!-- 1 -->")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
@@ -299,7 +299,7 @@ else:                                                                  # If sess
 
 
                     st.subheader(f"**Mark Tweet as Non-Disaster-Related**") 
-                    irrelevance = st.checkbox('This tweet is **:red[not]** disaster related (tweet will be excluded)', 
+                    irrelevance = st.checkbox('Tick box if this tweet is **:red[not]** disaster related', 
                                               value=st.session_state.irrelevance, 
                                               key=f"relevance + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
                     st.write("---")
