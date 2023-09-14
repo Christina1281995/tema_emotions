@@ -255,93 +255,67 @@ else:                                                                  # If sess
                         st.sidebar.image(link)
 
 
-                # st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
-
-                # Display the content in the sidebar
-                # st.sidebar.markdown(content, unsafe_allow_html=True)
-                
-
-
-                def reset():                                                                # Reset session elements for form
-                    st.session_state.update({
-                        "irrelevance": False,
-                        "emotion": "None"
-                    })
-
-
                 with st.form(key="my_form"):                            # The actual form                          
                 
-                    # Debugging
-                    st.write(f"session_state.emotion: {st.session_state.emotion}")
-                    st.write(f"Debug Type: {type(st.session_state.emotion)}")
-                    # emotion_index = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
-                    if st.session_state.emotion == 'None':
-                        st.session_state.emotion = 4
                     st.write(f"Emotion index: {st.session_state.emotion}")                    
                     
                     with st.container():
-                        st.write(f"**Emotion and Target #1:**") 
+                        st.header(f"**Emotion and Target #1**") 
                         output_one = StTextAnnotator(text + " <!-- 1 -->")
-                        
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                                index=4,
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
-                                               key=f"emotion_one_radio + {str(st.session_state.data_id)}")
-                    
+                                               key=f"emotion_one_radio + {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
                     st.write("---")
                     st.markdown("  ")
 
 
                     with st.container():
-                        st.write(f"**Emotion and Target #2:**") 
+                        st.header(f"**Emotion and Target #2**") 
                         output_two = StTextAnnotator(text + " <!-- 2 -->")
-
-
-                        # emotion_two = st.radio('Emotion associated with the target', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((st.session_state.emotion, st.session_state.emotion)), format_func=lambda x: x[1], label_visibility="hidden", key="emotion_two_radio")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
-                                            #    index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
                                                index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden",
-                                               key=f"emotion_two_radio+ {str(st.session_state.data_id)}")
-
+                                               key=f"emotion_two_radio+ {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
                     st.write("---")
                     st.markdown("  ")
 
 
                     with st.container():
-                        st.write(f"**Emotion and Target #3:**") 
+                        st.header(f"**Emotion and Target #3**") 
                         output_three = StTextAnnotator(text + " <!-- 3 -->")
-
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
-                                                #  index=EMOTION_OPTIONS.index(st.session_state.emotion) if st.session_state.emotion in [option[0] for option in EMOTION_OPTIONS] else 0, 
                                                  index=int(st.session_state.emotion),
                                                  format_func=lambda x: x[1], 
                                                  label_visibility="hidden", 
-                                                 key=f"emotion_three_radio+ {str(st.session_state.data_id)}")
-                    
+                                                 key=f"emotion_three_radio+ {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
                     st.write("---")
                     st.markdown("  ")
                         
                     
 
-                    st.write(f"**Urgency**") 
-                    urgency = st.checkbox('Tick box if this tweet IS urgent', value=st.session_state.irrelevance)
+                    st.header(f"**Urgency**") 
+                    urgency = st.checkbox('Tick box if this tweet **is** urgent', 
+                                          value=st.session_state.irrelevance,
+                                          key=f"urgency + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
                     st.write("---")
                     st.markdown("  ")
 
 
 
-                    st.write(f"**Mark Tweet as Non-Disaster-Related**") 
-                    irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=st.session_state.irrelevance)
+                    st.header(f"**Mark Tweet as Non-Disaster-Related**") 
+                    irrelevance = st.checkbox('This tweet is **not** disaster related (tweet will be excluded)', 
+                                              value=st.session_state.irrelevance, 
+                                              key=f"relevance + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
                     st.write("---")
                     st.markdown("  ")
                     
-                    if st.form_submit_button("Submit", on_click=reset):
+                    if st.form_submit_button("Submit"):
                         if output_one:
                             target_one = json.dumps(output_one)
                         else:
