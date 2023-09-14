@@ -272,9 +272,11 @@ else:                                                                  # If sess
                 with st.form(key="my_form"):                            # The actual form                          
                 
                     # Debugging
-                    st.write(f"Debug Value: {st.session_state.emotion}")
+                    st.write(f"session_state.emotion: {st.session_state.emotion}")
                     st.write(f"Debug Type: {type(st.session_state.emotion)}")
                     # emotion_index = next((i for i, v in enumerate(EMOTION_OPTIONS) if v[0] == st.session_state.emotion), 4)  # default to 'None' index
+                    if st.session_state.emotion == 'None':
+                        st.session_state.emotion = 4
                     st.write(f"Emotion index: {st.session_state.emotion}")                    
                     
                     with st.container():
