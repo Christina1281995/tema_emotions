@@ -28,11 +28,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-
-# Set up logging
-# logging.basicConfig(level=logging.DEBUG)
-
-
 # Constants
 
 CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
@@ -177,6 +172,7 @@ def get_discussion_data():
 def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
+
 def reset_form():
     st.session_state.emotion = 4
     st.session_state.irrelevance = False
@@ -193,8 +189,6 @@ st.title('Emotion Labeling for TEMA')
 # Initialize session state
 if "start" not in st.session_state:
     st.session_state["start"] = False
-# if "expander" not in st.session_state:
-#     st.session_state["expander"] = True
 if "irrelevance" not in st.session_state:
     st.session_state.irrelevance = False
 if "emotion" not in st.session_state:
@@ -284,7 +278,7 @@ else:                                                                  # If sess
 
 
                     with st.container():
-                        st.subheader(f"Emotion and Target #3", divider='rainbow') 
+                        st.subheader(f"Emotion and Target #3") 
                         output_three = StTextAnnotator(text + " <!-- 3 -->")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
@@ -297,7 +291,7 @@ else:                                                                  # If sess
                         
                     
 
-                    st.header(f"**Urgency**") 
+                    st.subheader(f"**Urgency**") 
                     urgency = st.checkbox('Tick box if this tweet **is** urgent', 
                                           value=st.session_state.irrelevance,
                                           key=f"urgency + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
@@ -306,7 +300,7 @@ else:                                                                  # If sess
 
 
 
-                    st.header(f"**Mark Tweet as Non-Disaster-Related**") 
+                    st.subheader(f"**Mark Tweet as Non-Disaster-Related**") 
                     irrelevance = st.checkbox('This tweet is **not** disaster related (tweet will be excluded)', 
                                               value=st.session_state.irrelevance, 
                                               key=f"relevance + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
