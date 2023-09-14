@@ -239,7 +239,7 @@ else:                                                                  # If sess
 
                 # Define the content to be displayed in the sidebar
 
-                st.sidebar.header('Current Tweet')
+                st.sidebar.header(':grey[Current Tweet]')
                 
                 st.sidebar.markdown(f"""
                 <span style="font-family: 'IBM Plex Sans', sans-serif; color: #bdc3c9; font-size: 14px">
@@ -258,7 +258,7 @@ else:                                                                  # If sess
                 with st.form(key="my_form"):                            # The actual form                          
                                     
                     with st.container():
-                        st.header(f"Emotion and Target #1") 
+                        st.subheader(f"Emotion and Target #1") 
                         output_one = StTextAnnotator(text + " <!-- 1 -->")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
@@ -271,7 +271,7 @@ else:                                                                  # If sess
 
 
                     with st.container():
-                        st.header1(f"Emotion and Target #2") 
+                        st.subheader(f"Emotion and Target #2") 
                         output_two = StTextAnnotator(text + " <!-- 2 -->")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
@@ -284,7 +284,7 @@ else:                                                                  # If sess
 
 
                     with st.container():
-                        st.header3(f"Emotion and Target #3") 
+                        st.subheader(f"Emotion and Target #3", divider='rainbow') 
                         output_three = StTextAnnotator(text + " <!-- 3 -->")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
