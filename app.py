@@ -178,7 +178,7 @@ def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
 def reset_form():
-    st.session_state.emotion = EMOTION_OPTIONS[4]
+    st.session_state.emotion = ('None', 'None')
     st.session_state.irrelevance = False
     st.session_state.urgency = False
 
