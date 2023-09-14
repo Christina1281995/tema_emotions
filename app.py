@@ -361,6 +361,8 @@ else:                                                                  # If sess
 
             with tab3:              # guide
                 
+                st.subheader("Definitions")
+
                 with st.expander("What is an Aspect Term?"):
                     st.write("An aspect term is the :red[target of an emotion]. It pinpoints the subject that emotions or sentiments are directed towards." +
                              " In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, in " +
@@ -374,6 +376,18 @@ else:                                                                  # If sess
                              "or sentiments associated with a particular aspect. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
+
+                with st.expander("When is a Tweet considered 'Urgent'?"):
+                    st.write("A tweet can be marked as urgent if the tweet refers to a situation that is :red[serious/dangerous] or where people urgently :red[need help]"+
+                             " :red[now] or are likely to need help in the :red[near future].")
+                    st.write(" ")
+
+                with st.expander("When is a Tweet considered 'Non Disaster-Related'?"):
+                    st.write("A tweet should be marked as non disaster-related if it makes :red[no direct or indirect reference to a natural disaster], such as flooding or wildfires.")
+                    st.write(" ")
+                
+                st.divider()
+                st.subheader("The Emotions")
 
                 with st.expander("Emotions Map"):
                     st.image("images/emotions guide.png")
@@ -408,6 +422,8 @@ else:                                                                  # If sess
                              "of anxiety, worry, or apprehension. This category can encompass concerns about personal safety, health, future events, or any "+
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
                              "risk, expressing phobias, or discussing unsettling experiences.")
+                    
+
 
             with tab4:              # discussion board
                 
