@@ -224,11 +224,18 @@ else:                                                                  # If sess
 
             with tab1:              # annotations
 
-                st.sidebar.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr' +
-                                    ' {str(st.session_state.data_id)} - {source}  <br> <br> </span> <br> <br> {text}')
-                
-                # st.markdown(, unsafe_allow_html=True)
+                # Define the content to be displayed in the sidebar
+                content = f"""
+                <span style="font-family: 'IBM Plex Sans', sans-serif; color: #CCD3DA; font-size: 14px">
+                    Tweet Nr {str(st.session_state.data_id)} - {source}
+                </span>
+                <br><br>
+                {text}
+                """
 
+                # Display the content in the sidebar
+                st.sidebar.markdown(content, unsafe_allow_html=True)
+                
                 # st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
                     if link != "nan":
