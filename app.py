@@ -177,6 +177,10 @@ def get_discussion_data():
 def extract_emotion_labels(emotion_data):
     return [emotion for emotion, label in emotion_data]
 
+def reset_form():
+    st.session_state.emotion = None
+    st.session_state.irrelevance = False
+    st.session_state.urgency = False
 
 # App
 
@@ -325,6 +329,8 @@ else:                                                                  # If sess
                             target_three = ''
                         data = [[st.session_state.data_id, message_id, text, source, target_one, emotion_one[0], target_two, emotion_two[0], target_three, emotion_three[0], urgency, irrelevance]]
                         save_results(pd.DataFrame(data, columns=["data_id", "message_id", "text", "source", "target_one", "emotion_one", "target_two", "emotion_two", "target_three", "emotion_three", "urgency", "irrelevance"]))
+                        
+                        reset_form()
                         st.experimental_rerun()
 
 
