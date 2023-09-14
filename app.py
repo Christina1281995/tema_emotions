@@ -292,7 +292,7 @@ else:                                                                  # If sess
                     
 
                     st.subheader(f"**Urgency**") 
-                    urgency = st.checkbox('Tick box if this tweet **is** urgent', 
+                    urgency = st.checkbox('Tick box if this tweet **:red[is]** urgent', 
                                           value=st.session_state.irrelevance,
                                           key=f"urgency + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
                     st.write("---")
@@ -301,7 +301,7 @@ else:                                                                  # If sess
 
 
                     st.subheader(f"**Mark Tweet as Non-Disaster-Related**") 
-                    irrelevance = st.checkbox('This tweet is **not** disaster related (tweet will be excluded)', 
+                    irrelevance = st.checkbox('This tweet is **:red[not]** disaster related (tweet will be excluded)', 
                                               value=st.session_state.irrelevance, 
                                               key=f"relevance + {str(st.session_state.data_id)} + {str(st.session_state.user_id)}")
                     st.write("---")
