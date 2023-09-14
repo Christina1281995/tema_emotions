@@ -16,7 +16,7 @@ st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
         
-        .sticky-container {
+        .sticky-slot {
             position: sticky;
             top: 0;
             z-index: 100;
@@ -230,8 +230,8 @@ else:                                                                  # If sess
                 
                 st.markdown(f'<span style="font-family: \'IBM Plex Sans\', sans-serif; color: #CCD3DA; font-size: 14px">Tweet Nr {str(st.session_state.data_id)} - {source}  <br> <br> </span>', unsafe_allow_html=True)
                 
-                with st.container():
-                    st.markdown(f'<div class="sticky-container">{text}</div>', unsafe_allow_html=True)
+                tweet_slot = st.empty()
+                tweet_slot.markdown(f'<div class="sticky-slot">{text}</div>', unsafe_allow_html=True)
 
                 st.markdown(f"{text} <br> <br> <br> ", unsafe_allow_html=True)             # The text that is actually shown to the user
                 for link in str(photo_url).split(','):                                           # Show any images
