@@ -242,22 +242,32 @@ user_ids = [i["name"] for i in config["users"]]
 
 # Login
 if not st.session_state["start"]:                                       # If session_state["start"] == False
-
+    
+    # user input
     user_name = st.text_input('Please enter your username', label_visibility='hidden', placeholder="Enter Username")             # Prompt for user name
-    config_users = [j["name"] for j in config["users"]]
-    st.write(f"config_users: {config_users[0]}, {config_users[1]}")
+    
+    # configured users
+    original_config_users = [j["name"] for j in config["users"]]
+    config_users = [name.lower() for name in original_config_users]
 
     if user_name:
-        st.write(' ')       
-        
-        user_data = get_user_data(user_name)                            # Get database data on user
-        data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
-        
-        if user_data[1] != "":
-            st.write(f"User found: {user_data[1]}")
-            st.write(f"You've annotated {user_data[2]} tweets so far.")
-            st.write(" ")
+        st.write(' ')    
 
+        # check if user in in the config list
+        if user_name.strip().lower() in config_users:
+            
+            # check if user is already in database with entries
+            user_data = get_user_data(user_name)                            # Get database data on user
+            data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
+        
+            if user_data[1] != "":
+                st.write(f"User found: {user_data[1]}")
+                st.write(f"You've annotated {user_data[2]} tweets so far.")
+                st.write(" ")
+            
+            else:
+                st.write(f"New user: {user_name}")
+                
             if st.button("Start Labeling"):
                 st.session_state.update({                                       # Add data into session state
                     "start": True,
