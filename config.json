@@ -46,6 +46,41 @@
             "id": 8,
             "name": "Bernd",
             "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 9,
+            "name": "Helen",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 10,
+            "name": "Nefta",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 11,
+            "name": "Martin",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 12,
+            "name": "Sruthi",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 13,
+            "name": "Dorian",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        }, 
+        {
+            "id": 14,
+            "name": "Sophia",
+            "data_path": "data/tema_wildfires_dataset.csv"
         }
     ],
     "predefined": true
