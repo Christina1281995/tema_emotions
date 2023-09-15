@@ -260,12 +260,12 @@ if not st.session_state["start"]:                                       # If ses
             user_data = get_user_data(user_name)                            # Get database data on user
             data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
             
-            st.write(f"{user_data}")
+            st.write(f"{str(user_data)}")
             st.write('---')
 
-            if user_data[1] != None:
+            if user_data != "None":
                 st.write(f"User found: {user_data[1]}")
-                st.write(f"You've annotated {user_data[2]} tweets so far.")
+                st.write(f"You've annotated: {user_data[2]} tweets so far.")
                 st.write(" ")
             
             else:
