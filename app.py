@@ -235,19 +235,26 @@ if not st.session_state["start"]:
                 st.write(f"**User found**: {user_data[1]}")
                 st.write(f"**Your progress**: {user_data[2]} annotated tweets so far")
                 st.write(" ")
-            
-            else:
-                st.write(f"**User found**: {user_name.strip().capitalize()}")
-                st.write(f"You haven't made any annotations yet, click 'Start Labeling' to begin!")
-                st.write(" ")
-
-            if st.button("Start Labeling"):
                 # Add data into session state
                 st.session_state.update({
                     "start": True,
                     "data_id": data_id,
                     "user_id": user_name
-                })                
+                })
+                
+            else:
+                st.write(f"**User found**: {user_name.strip().capitalize()}")
+                st.write(f"You haven't made any annotations yet, click 'Start Labeling' to begin!")
+                st.write(" ")
+                # Add data into session state
+                st.session_state.update({
+                    "start": True,
+                    "data_id": data_id,
+                    "user_id": user_name
+                })
+
+            st.button("Start Labeling")
+               
         else:
             st.write(f"There's no username configured for '{user_name}'.")
 
