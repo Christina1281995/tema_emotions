@@ -32,7 +32,19 @@
                 
         {
             "id": 6,
-            "name": "Person6",
+            "name": "Test",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 7,
+            "name": "Klara",
+            "data_path": "data/tema_wildfires_dataset.csv"
+        },
+
+        {
+            "id": 8,
+            "name": "Bernd",
             "data_path": "data/tema_wildfires_dataset.csv"
         }
     ],
