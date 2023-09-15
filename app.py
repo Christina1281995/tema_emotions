@@ -263,7 +263,7 @@ if not st.session_state["start"]:                                       # If ses
             st.write(f"{user_data}")
             st.write('---')
 
-            if user_data[1] != "":
+            if user_data[1] != "None":
                 st.write(f"User found: {user_data[1]}")
                 st.write(f"You've annotated {user_data[2]} tweets so far.")
                 st.write(" ")
