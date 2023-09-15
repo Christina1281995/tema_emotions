@@ -250,7 +250,7 @@ if not st.session_state["start"]:
                 st.session_state.update({
                     "start": True,
                     "data_id": data_id,
-                    "user_id": user_name
+                    "user_id": user_name.strip().capitalize()
                 })
 
             st.button("Start Labeling")
@@ -263,7 +263,7 @@ if not st.session_state["start"]:
 else:
     
     # Load data into a df for user to annotate
-    path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id]
+    path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
     if df is not None:                                                                  # If there is data
