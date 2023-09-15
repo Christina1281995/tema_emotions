@@ -263,7 +263,7 @@ if not st.session_state["start"]:
 else:
     
     # Load data into a df for user to annotate
-    path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
+    path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id]
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
     if df is not None:                                                                  # If there is data
