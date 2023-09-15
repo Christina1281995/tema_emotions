@@ -246,17 +246,20 @@ if not st.session_state["start"]:                                       # If ses
     user_name = st.text_input('Please enter your username', label_visibility='hidden', placeholder="Enter Username")             # Prompt for user name
     
     if user_name:
-        st.write('Username:', user_name)       
+        st.write(' ')       
+        
         user_data = get_user_data(user_name)                            # Get database data on user
         data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
-        st.write(f"{user_data}")
-        st.write(f"data_id: {data_id}")
+        
+        st.write(f"User found: {user_data[1]}")
+        st.write(f"You've annotated {user_data[2]} tweets so far.")
 
         st.session_state.update({                                       # Add data into session state
             "start": True,
             "data_id": data_id,
             "user_id": user_name
-        })        
+        })
+        st.write(" ")
         st.button("Start Labeling")
 
     else:
