@@ -195,13 +195,15 @@ def calculate_basic_emotion_percentages(selected_emotions):
     return basic_emotion_counts
 
 
-
-
 def st_custom_css(css):
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 button_css = """
 <style>
+    .stCheckbox {
+        display: inline-block;
+        margin-right: 20px;
+    }
     .stCheckbox label {
         padding: 8px 15px;
         border: 1px solid #ccc;
