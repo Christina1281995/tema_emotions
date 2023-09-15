@@ -11,6 +11,8 @@ import json
 from datetime import datetime
 import time
 import pytz
+from emotions_map import EMOTION_DICT
+
 
 st.markdown("""
     <style>
@@ -49,7 +51,6 @@ CREATE_TABLE_QUERY = '''CREATE TABLE IF NOT EXISTS public.results
 );'''
 
 EMOTION_OPTIONS = [('Anger', 'Anger'), ('Sadness', 'Sadness'), ('Happiness', 'Happiness'), ('Fear', 'Fear'), ('None', 'None')]
-
 
 # Functions
 
@@ -177,6 +178,47 @@ def reset_form():
     st.session_state.emotion = 4
     st.session_state.irrelevance = False
     st.session_state.urgency = False
+
+
+def calculate_basic_emotion_percentages(selected_emotions):
+    basic_emotion_counts = {}
+    total_selected = len(selected_emotions)
+    
+    for emotion in selected_emotions:
+        basic_emotion = EMOTION_DICT[emotion]
+        basic_emotion_counts[basic_emotion] = basic_emotion_counts.get(basic_emotion, 0) + 1
+
+    # Convert counts to percentages
+    for basic_emotion, count in basic_emotion_counts.items():
+        basic_emotion_counts[basic_emotion] = (count / total_selected) * 100
+
+    return basic_emotion_counts
+
+
+
+
+def st_custom_css(css):
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
+button_css = """
+<style>
+    .stCheckbox label {
+        padding: 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .stCheckbox label:hover {
+        background-color: #f0f0f0;
+    }
+    .stCheckbox input:checked + label {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+"""
+
 
 # App
 
@@ -430,7 +472,19 @@ else:                                                                  # If sess
                 st.write("If you're having difficulty figuring out which emotionn is the most appropriate for your labeling task, try using the help below.")
                 st.write("Click on the most like emotion or emotions and hit the 'Tell me what the most likely basic emotion is' button to see results that may help you along.")
                 st.write("---")
-                
+
+
+                selected_emotions = []
+                for emotion, basic_emotion in EMOTION_DICT.items():
+                    if st.checkbox(emotion, key=emotion):
+                        selected_emotions.append(emotion)
+
+
+
+                if st.button('Calculate'):
+                    percentages = calculate_basic_emotion_percentages(selected_emotions)
+                    for emotion, percentage in percentages.items():
+                        st.write(f"{emotion}: {percentage:.2f}%")
 
             with tab4:              # discussion board
                 
