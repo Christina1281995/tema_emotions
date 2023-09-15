@@ -237,7 +237,7 @@ if not st.session_state["start"]:
                 st.write(" ")
             
             else:
-                st.write(f"**User found**: {user_name}")
+                st.write(f"**User found**: {user_name.strip().capitalize()}")
                 st.write(f"You haven't made any annotations yet, click 'Start Labeling' to begin!")
                 st.write(" ")
 
