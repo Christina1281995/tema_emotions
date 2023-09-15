@@ -259,17 +259,16 @@ if not st.session_state["start"]:                                       # If ses
             # check if user is already in database with entries
             user_data = get_user_data(user_name)                            # Get database data on user
             data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
-            
-            st.write(f"{str(user_data)}")
-            st.write('---')
 
             if user_data != None:
-                st.write(f"User found: {user_data[1]}")
-                st.write(f"You've annotated: {user_data[2]} tweets so far.")
+                st.write(f"**User found**: {user_data[1]}")
+                st.write(f"**Your progress**: {user_data[2]} annotated tweets so far")
                 st.write(" ")
             
             else:
-                st.write(f"New user: {user_name}")
+                st.write(f"**User found**: {user_name}")
+                st.write(f"You haven't made any annotations yet, click 'Start Labeling' to begin!")
+                st.write(" ")
 
             if st.button("Start Labeling"):
                 st.session_state.update({                                       # Add data into session state
