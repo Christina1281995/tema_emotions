@@ -275,7 +275,8 @@ else:
             tab1, tab2, tab3 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
 
             with tab1:              # Tab 1: Annotations
-
+                
+                # Sidebar with current tweet display
                 st.sidebar.header(':grey[Current Tweet]')
                 
                 st.sidebar.markdown(f"""
@@ -287,16 +288,17 @@ else:
                 <br><br>
                 """, unsafe_allow_html=True)
                 
+                # Add any images into the sidebar if there are any in the data
                 for link in str(photo_url).split(','):
                     if link != "nan":
                         st.sidebar.image(link)
 
-
-                with st.form(key="my_form"):                            # The actual form                          
+                # Annotations Form
+                with st.form(key="my_form"):                       
                                     
                     with st.container():
                         st.subheader(f"Emotion and Target #1") 
-                        output_one = StTextAnnotator(text + "\u200B")  # + " <!-- 1 -->")
+                        output_one = StTextAnnotator(text + "\u200B")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
@@ -309,7 +311,7 @@ else:
 
                     with st.container():
                         st.subheader(f"Emotion and Target #2") 
-                        output_two = StTextAnnotator(text + "\u200B\u200B")   # + " <!-- 2 -->")
+                        output_two = StTextAnnotator(text + "\u200B\u200B")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
@@ -322,7 +324,7 @@ else:
 
                     with st.container():
                         st.subheader(f"Emotion and Target #3") 
-                        output_three = StTextAnnotator(text + "\u200B\u200B\u200B")   #  + " <!-- 3 -->")
+                        output_three = StTextAnnotator(text + "\u200B\u200B\u200B")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
                                                  index=int(st.session_state.emotion),
