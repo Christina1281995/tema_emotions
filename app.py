@@ -254,14 +254,14 @@ if not st.session_state["start"]:                                       # If ses
         if user_data[1] != "":
             st.write(f"User found: {user_data[1]}")
             st.write(f"You've annotated {user_data[2]} tweets so far.")
-
-            st.session_state.update({                                       # Add data into session state
-                "start": True,
-                "data_id": data_id,
-                "user_id": user_name
-            })
             st.write(" ")
-            st.button("Start Labeling")
+
+            if st.button("Start Labeling"):
+                st.session_state.update({                                       # Add data into session state
+                    "start": True,
+                    "data_id": data_id,
+                    "user_id": user_name
+                })                
         else:
             st.write(f"There is not username configured for {user_name}")
     else:
