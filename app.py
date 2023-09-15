@@ -195,33 +195,6 @@ def calculate_basic_emotion_percentages(selected_emotions):
     return basic_emotion_counts
 
 
-def st_custom_css(css):
-    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
-
-button_css = """
-<style>
-    .stCheckbox {
-        display: inline-block !important;
-        margin-right: 20px;
-    }
-    .stCheckbox label {
-        padding: 8px 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .stCheckbox label:hover {
-        background-color: #f0f0f0;
-    }
-    .stCheckbox input:checked + label {
-        background-color: #4CAF50;
-        color: white;
-    }
-</style>
-"""
-
-
 # App
 
 # Load config file
@@ -238,25 +211,23 @@ if "irrelevance" not in st.session_state:
 if "emotion" not in st.session_state:
     st.session_state.emotion = 4
 
-user_ids = [i["name"] for i in config["users"]]
-
 # Login
-if not st.session_state["start"]:                                       # If session_state["start"] == False
+if not st.session_state["start"]:
     
-    # user input
+    # User input
     user_name = st.text_input('Please enter your username', label_visibility='hidden', placeholder="Enter Username")             # Prompt for user name
     
-    # configured users
+    # Configured users
     original_config_users = [j["name"] for j in config["users"]]
     config_users = [name.lower() for name in original_config_users]
 
     if user_name:
         st.write(' ')    
 
-        # check if user in in the config list
+        # Check if user is in the config list
         if user_name.strip().lower() in config_users:
             
-            # check if user is already in database with entries
+            # Check if user is already in database with entries
             user_data = get_user_data(user_name)                            # Get database data on user
             data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
 
@@ -271,18 +242,20 @@ if not st.session_state["start"]:                                       # If ses
                 st.write(" ")
 
             if st.button("Start Labeling"):
-                st.session_state.update({                                       # Add data into session state
+                # Add data into session state
+                st.session_state.update({
                     "start": True,
                     "data_id": data_id,
                     "user_id": user_name
                 })                
         else:
-            st.write(f"There is not username configured for {user_name}")
-    else:
-        st.write(' ')
+            st.write(f"There's no username configured for '{user_name}'.")
 
-# Load Data
-else:                                                                  # If session_state["start"] == True
+
+# If session_state["start"] == True
+else:
+    
+    # Load data into a df for user to annotate
     path = [j["data_path"] for j in config["users"] if j["name"] == st.session_state.user_id][-1]
     df = pd.read_csv(path) if config["predefined"] else load_data(st.file_uploader("Csv file", type=['.csv']))
 
@@ -292,10 +265,9 @@ else:                                                                  # If sess
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
-            # tab1, tab2, tab3, tab5, tab4  = st.tabs(["Annotation", "Your Annotated Tweets", "Guide", "Help Identifying An Emotion", "Discussion Board"])
-            tab1, tab3, tab4 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
+            tab1, tab2, tab3 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
 
-            with tab1:              # annotations
+            with tab1:              # Tab 1: Annotations
 
                 st.sidebar.header(':grey[Current Tweet]')
                 
@@ -391,41 +363,7 @@ else:                                                                  # If sess
                         st.experimental_rerun()
 
 
-
-        # values = (st.session_state.user_id, row['data_id'], row['message_id'], row['text'], row['source'], row['target_one'], row['emotion_one'], row['target_two'], row['emotion_two'], row['target_three'], row['emotion_three'], row['urgency'], row['irrelevance'])
-
-
-
-            # with tab2:
-            #     st.write("Your Annotated Tweets")
-                
-            #     if st.button("Refresh Annotations"):
-            #         st.experimental_rerun() 
-                
-            #     user_annotations = get_user_data_all(st.session_state.user_id)
-            #     for annotation in user_annotations:
-            #         st.markdown(f"**Text:** {annotation[4]}")  # Display the text of the annotation
-            #         st.markdown(f"**Emotion:** {annotation[6]}")  # Display the emotion of the annotation
-            #         st.markdown(f"**Target:** {annotation[7]}")  # Display the target of the annotation
-                    
-            #         with st.expander("Edit Annotation"):  # Expandable section for editing
-            #             # Display the annotation form pre-filled with existing data
-            #             emotion = st.radio('Choose the dominant emotion:', EMOTION_OPTIONS, index=EMOTION_OPTIONS.index((annotation[6], annotation[6])))
-            #             target = StTextAnnotator(annotation[4])
-            #             irrelevance = st.checkbox('This tweet is NOT disaster related (tweet will be excluded)', value=annotation[8], key=f"irrelevance_{annotation[0]}")
-                        
-            #             if st.button(f"Update Annotation {annotation[2]}"):  # Button to submit the updated annotation
-            #                 # Update the database with the new annotation data
-            #                 conn = connect_to_database()
-            #                 cursor = conn.cursor()
-            #                 update_query = "UPDATE results SET emotion = %s, target = %s, irrelevance = %s WHERE id = %s;"
-            #                 values = (emotion, json.dumps(target), irrelevance, annotation[0])
-            #                 cursor.execute(update_query, values)
-            #                 conn.commit()
-            #                 conn.close()
-            #                 st.success("Annotation updated!")
-
-            with tab3:              # guide
+            with tab2:              # Tab 2: Guide
                 
                 st.subheader("Definitions")
 
@@ -490,27 +428,7 @@ else:                                                                  # If sess
                              "risk, expressing phobias, or discussing unsettling experiences.")
                     
 
-
-            # with tab5:
-            #     st.markdown(" ")
-            #     st.write("If you're having difficulty figuring out which emotionn is the most appropriate for your labeling task, try using the help below.")
-            #     st.write("Click on the most like emotion or emotions and hit the 'Tell me what the most likely basic emotion is' button to see results that may help you along.")
-            #     st.write("---")
-
-
-            #     selected_emotions = []
-            #     for emotion, basic_emotion in EMOTION_DICT.items():
-            #         if st.checkbox(emotion, key=emotion):
-            #             selected_emotions.append(emotion)
-
-
-
-            #     if st.button('Calculate'):
-            #         percentages = calculate_basic_emotion_percentages(selected_emotions)
-            #         for emotion, percentage in percentages.items():
-            #             st.write(f"{emotion}: {percentage:.2f}%")
-
-            with tab4:              # discussion board
+            with tab3:              # Tab 3: Discussion board
                 
                 st.markdown(" ")
                 posts = get_discussion_data()
