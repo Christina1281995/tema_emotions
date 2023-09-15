@@ -233,7 +233,7 @@ if not st.session_state["start"]:
 
             if user_data != None:
                 st.write(f"**User found**: {user_data[1]}")
-                st.write(f"**Your progress**: {user_data[2]} annotated tweets so far")
+                st.write(f"**Your progress**: {user_data[2]} tweets annotated so far")
                 st.write(" ")
                 # Add data into session state
                 st.session_state.update({
