@@ -244,7 +244,9 @@ user_ids = [i["name"] for i in config["users"]]
 if not st.session_state["start"]:                                       # If session_state["start"] == False
 
     user_name = st.text_input('Please enter your username', label_visibility='hidden', placeholder="Enter Username")             # Prompt for user name
-    
+    config_users = [j["name"] for j in config["users"]]
+    st.write(f"config_users: {config_users[0]}, {config_users[1]}")
+
     if user_name:
         st.write(' ')       
         
