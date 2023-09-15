@@ -243,7 +243,8 @@ user_ids = [i["name"] for i in config["users"]]
 # Login
 if not st.session_state["start"]:                                       # If session_state["start"] == False
 
-    user_name = st.text_input('Please enter your username')             # Prompt for user name
+    user_name = st.text_input('Please enter your username', label_visibility='hidden', placeholder="Enter Username")             # Prompt for user name
+    
     if user_name:
         st.write('Username:', user_name)       
         user_data = get_user_data(user_name)                            # Get database data on user
@@ -259,7 +260,7 @@ if not st.session_state["start"]:                                       # If ses
         st.button("Start Labeling")
 
     else:
-        st.write('Username not found')
+        st.write(' ')
 
 # Load Data
 else:                                                                  # If session_state["start"] == True
