@@ -201,7 +201,7 @@ def st_custom_css(css):
 button_css = """
 <style>
     .stCheckbox {
-        display: inline-block;
+        display: inline-block !important;
         margin-right: 20px;
     }
     .stCheckbox label {
