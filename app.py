@@ -227,7 +227,7 @@ else:                                                                  # If sess
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
             # tab1, tab2, tab3, tab4  = st.tabs(["Annotation", "Your Annotated Tweets", "Guide", "Discussion Board"])
-            tab1, tab3, tab4 = st.tabs(["Annotation", "Guide", "Discussion Board"])
+            tab1, tab3, tab5, tab4 = st.tabs(["Annotation", "Guide", "Help Identifying An Emotion", "Discussion Board"])
 
             with tab1:              # annotations
 
@@ -424,6 +424,13 @@ else:                                                                  # If sess
                              "risk, expressing phobias, or discussing unsettling experiences.")
                     
 
+
+            with tab5:
+                st.markdown(" ")
+                st.write("If you're having difficulty figuring out which emotionn is the most appropriate for your labeling task, try using the help below.")
+                st.write("Click on the most like emotion or emotions and hit the 'Tell me what the most likely basic emotion is' button to see results that may help you along.")
+                st.write("---")
+                
 
             with tab4:              # discussion board
                 
