@@ -239,7 +239,7 @@ if not st.session_state["start"]:
                 st.session_state.update({
                     "start": True,
                     "data_id": data_id,
-                    "user_id": user_name
+                    "user_id": user_name.strip().lower().capitalize()
                 })
                 
             else:
@@ -250,7 +250,7 @@ if not st.session_state["start"]:
                 st.session_state.update({
                     "start": True,
                     "data_id": data_id,
-                    "user_id": user_name.strip().capitalize()
+                    "user_id": user_name.strip().lower().capitalize()
                 })
 
             st.button("Start Labeling")
