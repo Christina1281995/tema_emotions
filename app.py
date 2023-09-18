@@ -284,7 +284,9 @@ else:
                     Tweet Nr {str(st.session_state.data_id)} - {source}
                 </span>
                 <br><br>
+                <span style="font-size: 16px">
                 {text}
+                </span>
                 <br><br>
                 """, unsafe_allow_html=True)
                 
