@@ -401,7 +401,7 @@ else:
 
                 with st.expander("What is an Aspect Term?"):
                     st.write("An aspect term is a word or phrase within a text that represents a specific entity, feature, or topic that "+
-                            "emotions are directed towards. It is the focal point of the emotion in the statement. In simpler terms, it's "+
+                            "emotions are directed towards. It is the :red[focal point of the emotion in the statement]. In simpler terms, it's "+
                             "the 'what' or 'who' that the sentiment, opinion or emotion in the statement is about. In the context of "+
                             "disaster-related tweets, aspect terms can be entities, locations, events, or any other specific subject that "+
                             "the tweet's emotion is about. ")
