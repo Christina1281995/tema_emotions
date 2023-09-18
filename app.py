@@ -298,39 +298,39 @@ else:
                                     
                     with st.container():
                         st.subheader(f"Emotion and Target #1") 
-                        output_one = StTextAnnotator(text + "\u200B")
                         emotion_one = st.radio('Emotion associated with the target:', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden", 
                                                key=f"emotion_one_radio + {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
+                        output_one = StTextAnnotator(text + "\u200B")
                     st.write("---")
                     st.markdown("  ")
 
 
                     with st.container():
                         st.subheader(f"Emotion and Target #2") 
-                        output_two = StTextAnnotator(text + "\u200B\u200B")
                         emotion_two = st.radio('Emotion associated with the target', 
                                                EMOTION_OPTIONS, 
                                                index=int(st.session_state.emotion),
                                                format_func=lambda x: x[1], 
                                                label_visibility="hidden",
                                                key=f"emotion_two_radio+ {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
+                        output_two = StTextAnnotator(text + "\u200B\u200B")
                     st.write("---")
                     st.markdown("  ")
 
 
                     with st.container():
                         st.subheader(f"Emotion and Target #3") 
-                        output_three = StTextAnnotator(text + "\u200B\u200B\u200B")
                         emotion_three = st.radio('Emotion associated with the target', 
                                                  EMOTION_OPTIONS, 
                                                  index=int(st.session_state.emotion),
                                                  format_func=lambda x: x[1], 
                                                  label_visibility="hidden", 
                                                  key=f"emotion_three_radio+ {str(st.session_state.data_id)}  + {str(st.session_state.user_id)}")
+                        output_three = StTextAnnotator(text + "\u200B\u200B\u200B")
                     st.write("---")
                     st.markdown("  ")
                         
