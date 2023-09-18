@@ -232,7 +232,7 @@ if not st.session_state["start"]:
             data_id = user_data[2] + 1 if user_data else 0                  # Set data_id to last labeled data item if user already exists in db, else 0
 
             if user_data != None:
-                st.write(f"**User found**: {user_data[1]}")
+                st.write(f"**Found**: {user_data[1]}")
                 st.write(f"**Your progress**: {user_data[2]} tweets annotated so far")
                 st.write(" ")
                 # Add data into session state
