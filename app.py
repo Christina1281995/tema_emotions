@@ -400,9 +400,18 @@ else:
                 st.subheader("Definitions")
 
                 with st.expander("What is an Aspect Term?"):
-                    st.write("An aspect term is the :red[target of an emotion]. It pinpoints the subject that emotions or sentiments are directed towards." +
-                             " In simpler terms, it's the 'what' or 'who' that the sentiment or emotion in the statement is about. For instance, in " +
-                             "the sentence 'The camera on this phone is amazing,' the aspect term is 'camera' as it is the specific feature of the phone being praised.")
+                    st.write("An aspect term is a word or phrase within a text that represents a specific entity, feature, or topic that "+
+                            "emotions are directed towards. It is the focal point of the emotion in the statement. In simpler terms, it's "+
+                            "the 'what' or 'who' that the sentiment, opinion or emotion in the statement is about. In the context of "+
+                            "disaster-related tweets, aspect terms can be entities, locations, events, or any other specific subject that "+
+                            "the tweet's emotion is about. ")
+                    st.write("Emotion Association: An aspect term is typically associated with a particular emotion in the text. If a term "+
+                            "does not have any emotion directed towards it, it might not be an aspect term. For example, in the tweet "+
+                            "'The response team was quick during the flood,' 'response team' is the aspect term, not 'flood.'")
+                    st.write("Multiple Aspect Terms: A single tweet can have multiple aspect terms. Each aspect term should be +"
+                                "associated with its respective emotion. For instance, in the tweet 'The firefighters were brave, but the "+
+                                "equipment was outdated,' both 'firefighters' and 'equipment' are aspect terms with different emotions "+
+                                "associated with them.")
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
 
@@ -414,7 +423,7 @@ else:
                     st.image("images/aspect based explanation.png")
 
                 with st.expander("When is a Tweet considered 'Urgent'?"):
-                    st.write("A tweet can be marked as urgent if the tweet refers to a situation that is :red[serious/dangerous] or where people urgently :red[need help]"+
+                    st.write("A tweet can be marked as urgent if the tweet refers to a situation that is :red[serious/dangerous], where people urgently :red[need help]"+
                              " :red[now] or are likely to need help in the :red[near future].")
                     st.write(" ")
 
