@@ -383,17 +383,19 @@ else:
                                 "processing (NLP) models in the context of sentiment and semantic information extraction from complex "+
                                 "natural language. Ultimately, the intended use from such a training dataset is to aid emergency responders "+
                                 "in the event of natural disasters. The dataset will later be made publicly available, so that the broader "+
-                                "scientific community can also make use of it. "+
-                                "The high-level aims related to this labeling task are to generate: <br> <br> "+
-                                "- a high-quality social media training dataset which contains complex natural language (slang words, "+
-                                "colloquial phrasing, incorrect grammar, sarcasm, etc.) <br> <br> "+
-                                "- an aspect-level training dataset for the domain of natural disaster response. <br> <br> "+
-                                "NLP tasks that can be addressed using this dataset include: "+
-                                "- Aspect-based emotion analysis: a fine-trained analysis of the emotions in text and their respective "+
-                                "targets "+
-                                "- Sentence-level emotion classification (where no aspect term is identified, or all aspect-level "+
-                                "emotions are the same) "+
-                                "- Urgency classification: identifying the urgent need for help.")
+                                "scientific community can also make use of it. ")
+                    st.write(" ")
+                    st.write("The high-level aims related to this labeling task are to generate:")
+                    st.write("- a high-quality social media training dataset which contains complex natural language (slang words, "+
+                                "colloquial phrasing, incorrect grammar, sarcasm, etc.) ")
+                    st.write("- an aspect-level training dataset for the domain of natural disaster response.")
+                    st.write(" ")
+                    st.write("NLP tasks that can be addressed using this dataset include: ")
+                    st.write("- Aspect-based emotion analysis: a fine-trained analysis of the emotions in text and their respective "+
+                                "targets ")
+                    st.write("- Sentence-level emotion classification (where no aspect term is identified, or all aspect-level "+
+                                "emotions are the same) ")
+                    st.write("- Urgency classification: identifying the urgent need for help.")
                 
                 st.subheader("Definitions")
 
