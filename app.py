@@ -273,7 +273,7 @@ else:
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
             # tab1, tab2, tab3 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
-            tab1, tab2 = st.tabs(["Annotation", "Guide"])
+            tab1, tab2, tab3 = st.tabs(["Annotation", "Guide", "Emotions Graph"])
 
             with tab1:              # Tab 1: Annotations
                 
@@ -487,9 +487,11 @@ else:
                 
                 st.divider()
                 st.subheader("The Emotions")
+            
 
-                with st.expander("Emotions Map"):
-                    st.image("images/emotions guide.png")
+            with tab3:              # Tab 3: Emotions Graph
+
+                st.image("images/emotions graph.png")
 
                 with st.expander("Happiness In Detail"):
                     st.write("Happiness is a positive emotion characterized by feelings of joy, contentment, and satisfaction. "+
