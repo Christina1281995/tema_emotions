@@ -400,6 +400,9 @@ else:
                                 "emotions are the same) ")
                     st.write("- Urgency classification: identifying the urgent need for help.")
                 
+
+
+
                 st.subheader("Definitions")
 
                 with st.expander("Emotions and Targets?"):
@@ -429,7 +432,6 @@ else:
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
 
-
                 with st.expander("What is the Aspect-Based Emotion?"):
                     st.write("The aspect-based emotion is the :red[emotion associated with the aspect term]. The aspect-based emotion refers to the emotions"+
                              "or sentiments associated with a particular aspect. It involves identifying and understanding the emotions expressed in relation to that specific aspect.")
@@ -437,14 +439,18 @@ else:
                     st.image("images/aspect based explanation.png")
 
 
+
+
+
                 st.subheader("Annotating Aspect-Terms and Emotions")
 
                 with st.expander("How do I annotate the Aspect-term and Emotion?"):
-                    st.write("Step 1: Read the current tweet carefully.")    
-                    st.write("Step 2: Identify the emotion in the text.")
-                    st.write("Step 3: Select the target word(s) using your mouse.")
-                    st.write("Step 4: You can click the 'x' to de-select the text.")
+                    st.write("**Step 1**: Read the current tweet carefully.")    
+                    st.write("**Step 2**: Identify the emotion in the text.")
+                    st.write("**Step 3**: Select the target word(s) using your mouse.")
+                    st.write("**Step 4**: You can click the 'x' to de-select the text.")
                     st.write("If you find any additional aspect-terms, you can annotate those in the additional sections.")
+                    st.image("images/HowTo1.png")
 
                 with st.expander("What is the best strategy for labeling emotion-target pairs?"):
                     st.write("Try to :red[first identify any emotions] from the text. The detection of emotions is a more "+
@@ -471,6 +477,14 @@ else:
                 with st.expander("I'm really unsure which emotion is in this tweet."):
                     st.write("If you're unsure, consider the Emotion Graph (Shaver et al., 1987)! You may find it useful to print out the Graph and keep it handy while you annotate!")
 
+                with st.expander("When to use the **None** Emotion Category"):
+                    st.write("This category is used for tweets where :red[**no**] clear emotion is directed towards the aspect term. That includes neutral observations, factual statements, "+
+                             "or any content where the emotion of the person posting the tweet is not explicitly expressed or inferred. The 'none' category is relevant when the"+
+                              " text provides information without conveying personal feelings, opinions, or reactions. ")
+                    st.write("**Caution**: :red[Do not use the 'None' emotion category when you are unsure which emotion to choose]. As long as there is any emotion contained in the text,"+
+                             " the emotion category should not be set to 'None'. Please refer to the emotion graph to help you make a decision on the emotion.")
+
+
                 st.subheader("Annotating Urgency")
 
                 with st.expander("When is a Tweet considered 'Urgent'?"):
@@ -479,14 +493,14 @@ else:
                     st.write(" ")
 
                 
+
+
                 st.subheader("Annotating Disaster-Relatedness")
 
                 with st.expander("When is a Tweet considered 'Non Disaster-Related'?"):
                     st.write("A tweet should be marked as non disaster-related if it makes :red[no direct or indirect reference to a natural disaster], such as flooding or wildfires.")
                     st.write(" ")
                 
-                st.divider()
-                st.subheader("The Emotions")
             
 
             with tab3:              # Tab 3: Emotions Graph
@@ -497,7 +511,7 @@ else:
                     st.write("Happiness is a positive emotion characterized by feelings of joy, contentment, and satisfaction. "+
                              "Tweets expressing happiness may indicate a sense of pleasure, excitement, or delight. Examples of tweets "+
                              "expressing happiness could include positive experiences, achievements, celebrations, or expressions of gratitude.")
-                    # st.image("images/happy1.png")  
+                    st.image("images/happiness_example.png")  
                     # st.image("images/happy2.png")
                     # st.image("images/happy3.png")      
                     # st.image("images/happy4.png")
@@ -506,7 +520,7 @@ else:
                     st.write("Anger is a negative emotion associated with feelings of displeasure, irritation, or frustration. Tweets expressing "+
                              "anger may include instances of perceived injustice, provocation, or annoyance. Anger can be directed towards individuals, "+
                              "events, organizations, or societal issues. Examples of angry tweets might involve expressing outrage, criticism, or venting frustration.")
-                    # st.image("images/anger1.png")  
+                    st.image("images/anger_example.png")  
                     # st.image("images/anger2.png")
                     # st.image("images/anger3.png")      
 
@@ -515,7 +529,7 @@ else:
                              "emotions related to loss, disappointment, or melancholy. This category includes tweets that convey expressions of sadness, "+
                              "loneliness, heartbreak, or other forms of emotional distress. Examples of sad tweets could involve sharing personal setbacks, "+
                              "expressing empathy for others, or discussing emotional hardships.")
-                    # st.image("images/sad1.png")  
+                    st.image("images/sadness_example.png")  
                     # st.image("images/sad2.png")
 
                 with st.expander("Fear In Detail"):
@@ -523,8 +537,15 @@ else:
                              "of anxiety, worry, or apprehension. This category can encompass concerns about personal safety, health, future events, or any "+
                              "other circumstances that evoke a sense of fear. Examples of fearful tweets might include expressing concern about a potential "+
                              "risk, expressing phobias, or discussing unsettling experiences.")
+                    st.image("images/fear_example.png")
                     
-
+                with st.expander("The **None** Category"):
+                    st.write("This category is used for tweets where :red[**no**] clear emotion is directed towards the aspect term. That includes neutral observations, factual statements, "+
+                             "or any content where the emotion of the person posting the tweet is not explicitly expressed or inferred. The 'none' category is relevant when the"+
+                              " text provides information without conveying personal feelings, opinions, or reactions. ")
+                    st.write("**Caution**: :red[Do not use the 'None' emotion category when you are unsure which emotion to choose]. As long as there is any emotion contained in the text,"+
+                             " the emotion category should not be set to 'None'. Please refer to the emotion graph to help you make a decision on the emotion.")
+                    
             # with tab3:              # Tab 3: Discussion board
                 
             #     st.markdown(" ")
