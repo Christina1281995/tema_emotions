@@ -402,6 +402,17 @@ else:
                 
                 st.subheader("Definitions")
 
+                with st.expander("Emotions and Targets?"):
+                    st.write("For each tweet, you can annotate up to 3 :red[emotion-target pairs]. To be exact, an emotion-target pair refers to an aspect-term and its associated emotion. Identifying these pairs is one aim of ABEA.")
+                
+                with st.expander("What is ABEA?"):
+                    st.write("ABEA stands for aspect-based emotion analysis. It originates from sentiment analysis, which is a technique for "+
+                             "automatically recognizing positive or negative opinions in texts. Whereas sentiment analysis aims to classify opinions"+
+                              " on a binary scale (from positive to negative), emotion analysis (or emotion detection) aims to classify text into distinct emotion categories. ")
+                    st.write("Traditionally, most methods detect sentiments or emotions on the sentence level. This means that if several expressions of "+
+                             "sentiment/emotion occur in a sentence, the analysis results are a single generalized value. Aspect-based analyses try to distinguish "+
+                             "between different sentiments/emotions within the same sentence, while also extracting the target to which they relate."+
+                              " This breaks down a general sentiment/emotion on the sentence level into detailed aspects.")
                 with st.expander("What is an Aspect Term?"):
                     st.write("An aspect term is a word or phrase within a text that represents a specific entity, feature, or topic that "+
                             "emotions are directed towards. It is the :red[focal point of the emotion in the statement]. In simpler terms, it's "+
@@ -425,10 +436,50 @@ else:
                     st.write(" ")
                     st.image("images/aspect based explanation.png")
 
+
+                st.subheader("Annotating Aspect-Terms and Emotions")
+
+                with st.expander("How do I annotate the Aspect-term and Emotion?"):
+                    st.write("Step 1: Read the current tweet carefully.")    
+                    st.write("Step 2: Identify the emotion in the text.")
+                    st.write("Step 3: Select the target word(s) using your mouse.")
+                    st.write("Step 4: You can click the 'x' to de-select the text.")
+                    st.write("If you find any additional aspect-terms, you can annotate those in the additional sections.")
+
+                with st.expander("What is the best strategy for labeling emotion-target pairs?"):
+                    st.write("Try to :red[first identify any emotions] from the text. The detection of emotions is a more "+
+                             "intuitive process for humans than the exact pinpointing of aspect terms. Once you have identified"+
+                              " the emotion, try to identify the exact target of that emotion. ")
+
+                with st.expander("What if there is no explicit aspect term?"):
+                    st.write("When there is no target of the emotion or the target is implicitly expressed (e.g., “Terrible!”), leave the "+
+                             "target selection blank and just choose the appropriate emotion for the text. In such cases, the emotion will "+
+                              "be considered as applicable to the entire tweet text. These annotations will later be used for sentence level emotion detection. ")
+
+                with st.expander("Should I select a target if there is no emotion (e.g. reporting)?"):
+                    st.write("No, since the essence of ABEA is to identify emotion-target pairs, there cannot be a “target” if there is no emotion. To ensure consistency "+
+                             "in the training dataset, please make sure you only annotate aspect terms (targets) if they come in a pair with an emotion. ")
+                
+                with st.expander("How much time and effort should I invest to decide on the exact words I select for the aspect-term?"):
+                    st.write("Please take enough time to fully understand the tweet and annotate it to the best of your judgement. Your judgement is critical for"+
+                             " deciding whether the target of an emotion is just a single word or a series of words or no words at all. After all annotations are completed,"+
+                              " only those words that match between most annotators will be kept in the result dataset. ")
+                    
+                with st.expander("What if the text is a citation or a 3rd person account? Should I still annotate the emotions and targets?"):
+                    st.write("Yes, please annotate as usual.")
+
+                with st.expander("I'm really unsure which emotion is in this tweet."):
+                    st.write("If you're unsure, consider the Emotion Graph (Shaver et al., 1987)! You may find it useful to print out the Graph and keep it handy while you annotate!")
+
+                st.subheader("Annotating Urgency")
+
                 with st.expander("When is a Tweet considered 'Urgent'?"):
                     st.write("A tweet can be marked as urgent if the tweet refers to a situation that is :red[serious/dangerous], where people urgently :red[need help]"+
                              " :red[now] or are likely to need help in the :red[near future].")
                     st.write(" ")
+
+                
+                st.subheader("Annotating Disaster-Relatedness")
 
                 with st.expander("When is a Tweet considered 'Non Disaster-Related'?"):
                     st.write("A tweet should be marked as non disaster-related if it makes :red[no direct or indirect reference to a natural disaster], such as flooding or wildfires.")
