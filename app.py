@@ -272,7 +272,8 @@ else:
         if st.session_state.data_id < len(df):                                          # If we haven't reached the end of the labeling task yet
             message_id, text, source, photo_url = df.loc[st.session_state.data_id, ['message_id', 'text', 'source', 'photo_url']]       # Set labeling parameters
         
-            tab1, tab2, tab3 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
+            # tab1, tab2, tab3 = st.tabs(["Annotation", "Guide",  "Discussion Board"])
+            tab1, tab2 = st.tabs(["Annotation", "Guide"])
 
             with tab1:              # Tab 1: Annotations
                 
@@ -471,34 +472,34 @@ else:
                              "risk, expressing phobias, or discussing unsettling experiences.")
                     
 
-            with tab3:              # Tab 3: Discussion board
+            # with tab3:              # Tab 3: Discussion board
                 
-                st.markdown(" ")
-                posts = get_discussion_data()
-                if posts:
-                    for post in posts:
-                        formatted_date = post[3].strftime("%b-%d-%Y %H:%M")         # Format the timestamp
-                        st.markdown(f"**{post[1]}** ({formatted_date})")            # Display author and date
-                        st.write(post[2])                                           # Display the post text
-                        st.markdown("---")                                          # Add a separator line
+            #     st.markdown(" ")
+            #     posts = get_discussion_data()
+            #     if posts:
+            #         for post in posts:
+            #             formatted_date = post[3].strftime("%b-%d-%Y %H:%M")         # Format the timestamp
+            #             st.markdown(f"**{post[1]}** ({formatted_date})")            # Display author and date
+            #             st.write(post[2])                                           # Display the post text
+            #             st.markdown("---")                                          # Add a separator line
 
-                if st.button("Refresh Posts"):
-                    posts = get_discussion_data()
-                st.markdown("  ")  # Add space
-                st.markdown("  ")  # Add a space
-                # st.markdown("  ")  # Add a space
+            #     if st.button("Refresh Posts"):
+            #         posts = get_discussion_data()
+            #     st.markdown("  ")  # Add space
+            #     st.markdown("  ")  # Add a space
+            #     # st.markdown("  ")  # Add a space
                 
-                with st.form(key="posts"):                                                   
+            #     with st.form(key="posts"):                                                   
 
-                    post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
+            #         post_text = st.text_area('Add a post:', 'Thoughts, comments, ideas, examples...')
 
-                    cet = pytz.timezone('CET')
-                    now = datetime.now(cet)
-                    date = now.strftime("%b-%d-%Y %H:%M")
+            #         cet = pytz.timezone('CET')
+            #         now = datetime.now(cet)
+            #         date = now.strftime("%b-%d-%Y %H:%M")
                         
-                    if st.form_submit_button("Post"):
-                        post = [[post_text, date]]
-                        save_discussion(pd.DataFrame(post, columns=["text", "date"]))
+            #         if st.form_submit_button("Post"):
+            #             post = [[post_text, date]]
+            #             save_discussion(pd.DataFrame(post, columns=["text", "date"]))
 
 
         else:

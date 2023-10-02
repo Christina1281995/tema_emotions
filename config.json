@@ -3,7 +3,7 @@
         {
             "id": 1,
             "name": "Christina",
-            "data_path": "data/tema_wildfires_dataset.csv"
+            "data_path": "data/sample.csv"
         }, 
 
         {
@@ -27,7 +27,7 @@
         {
             "id": 5,
             "name": "Sebastian",
-            "data_path": "data/tema_wildfires_dataset.csv"
+            "data_path": "data/sample.csv"
         },
                 
         {
@@ -39,7 +39,7 @@
         {
             "id": 7,
             "name": "Klara",
-            "data_path": "data/tema_wildfires_dataset.csv"
+            "data_path": "data/sample.csv"
         },
 
         {
@@ -75,8 +75,9 @@
         {
             "id": 13,
             "name": "Dorian",
-            "data_path": "data/tema_wildfires_dataset.csv"
+            "data_path": "data/sample.csv"
         }, 
+        
         {
             "id": 14,
             "name": "Sophia",
