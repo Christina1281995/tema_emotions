@@ -292,9 +292,9 @@ else:
                 """, unsafe_allow_html=True)
                 
                 # Add any images into the sidebar if there are any in the data
-                for link in str(photo_url).split(','):
-                    if link != "nan":
-                        st.sidebar.image(link)
+                # for link in str(photo_url).split(','):
+                #     if link != "nan":
+                #         st.sidebar.image(link)
 
                 # Annotations Form
                 with st.form(key="my_form"):                       
@@ -500,8 +500,7 @@ else:
                 with st.expander("When is a Tweet considered 'Non Disaster-Related'?"):
                     st.write("A tweet should be marked as non disaster-related if it makes :red[no direct or indirect reference to a natural disaster], such as flooding or wildfires.")
                     st.write(" ")
-                
-            
+                       
 
             with tab3:              # Tab 3: Emotions Graph
 
