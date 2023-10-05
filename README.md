@@ -2,6 +2,12 @@
 
 Currently, this app runs at https://emotionlabeling.streamlit.app/
 
+<b>Anyone who would like to test the app can use the login username "test".</b>
+
+
+
+
+
 ## To Run the App on Streamlit Cloud 
 
 ### Setup
